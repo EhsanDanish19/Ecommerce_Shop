@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+.nav-menu{
+    gap: 20px;
+    font-weight: 500;
+}
+
+.nav-cart{
+    display: flex;
+    align-items: center;
+    gap: 45px;
+}
+
+
+/* Tablet */
+@media (max-width: 900px) {
+
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .navbar{
+        padding: 10px 20px;
+}
+    div .nav-logo {
+        padding: 0;
+        margin: 0px;
+    }
+
+    .nav-logo {
+        height: 35px;
+    }
+
+    .nav-p {
+        font-size: 18px;
+    }
+
+
+
+
+    .nav-login{
+        width: 80px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .nav-count {
+        width: 15px;
+        height: 15px;
+        font-size: 13px;
+    }
+}
