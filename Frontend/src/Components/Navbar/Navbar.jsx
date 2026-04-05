@@ -19,7 +19,7 @@ const Navbar = () => {
                 {/* Logo */}
                 <div className="flex items-center gap-2">
                     <img src={logo} alt="" className="nav-logo h-10" />
-                    <p className="nav-p shopify text-xl font-semibold">Shopify</p>
+                    <p className="nav-p text-xl font-semibold">Shopify</p>
                 </div>
 
                 {/* Desktop Menu */}
