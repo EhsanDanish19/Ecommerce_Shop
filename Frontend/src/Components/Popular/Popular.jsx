@@ -4,7 +4,7 @@ import data_product from '../../assets/data'
 
 const Popular = () => {
   return (
-    <div className='flex items-center flex-col pt-5 bg-gradient-to-b from-gray-200 to-green-300'>
+    <div className='flex items-center flex-col pb-8 pt-5 bg-gradient-to-b from-gray-200 to-green-300'>
       <h1 className='text-[#171717] text-3xl md:text-4xl lg:text-5xl font-bold c-green'>
       POPULAR IN WOMEN
       </h1>
