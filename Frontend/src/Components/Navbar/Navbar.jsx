@@ -24,27 +24,34 @@ const Navbar = () => {
 
                 {/* Desktop Menu */}
                 <ul className="hidden md:flex gap-6 text-gray-600 ">
-                    <li
+                    <Link to="/"><li
                         className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "home" ? "bg-gray-100 text-black" : ""}`}
                         onClick={() => setMenu("home")}
                     >
-                        <Link to="/">Home</Link>
+                        Home
                     </li>
+                        </Link>
+                        <Link to="/mens">
                     <li
                         className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "mens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("mens")}
                     >
-                        <Link to="/mens">Men</Link>
+                        Men
                     </li>
+                        </Link>
+                        <Link to="/womens">
                     <li
                         className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "womens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("womens")}
                     >
-                        <Link to="/womens">Women</Link>
+                        Women
                     </li>
+                        </Link>
+                        <Link to="/kids">
                     <li
                         className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "kids" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("kids")}
                     >
-                        <Link to="/kids">Kids</Link>
+                        Kids
                     </li>
+                        </Link>
                 </ul>
 
                 {/* Right */}
@@ -73,27 +80,34 @@ const Navbar = () => {
             {/* Mobile Menu */}
             {open && (
                 <ul className="flex flex-col gap-3 mt-4 md:hidden text-gray-600">
+                    <Link to="/">
                                         <li
                         className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "home" ? "bg-gray-100 text-black" : ""}`}
                         onClick={() => setMenu("home")}
-                    ><Link to="/">Home</Link>
-                        
+                    >
+                    Home    
                     </li>
+                    </Link>
+                        <Link to="/mens">
                     <li
                         className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "mens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("mens")}
                     >
-                        <Link to="/mens">Men</Link>
+                        Men
                     </li>
+                        </Link>
+                        <Link to="/womens">
                     <li
                         className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "womens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("womens")}
                     >
-                        <Link to="/womens">Women</Link>
+                        Women
                     </li>
-                    <li
-                        className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "kids" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("kids")}
+                        </Link>
+                        <Link to="/kids">
+                    <li className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "kids" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("kids")}
                     >
-                        <Link to="/kids">Kids</Link>
+                        Kids
                     </li>
+                        </Link>
                 </ul>
             )}
 

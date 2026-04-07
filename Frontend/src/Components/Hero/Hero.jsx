@@ -2,17 +2,17 @@ import React from 'react'
 import HeroImg from '../../assets/shoping.jpg'
 const Hero = () => {
   return (
-    <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-green-300 to-gray-200 items-center justify-between">
+    <div className="flex flex-col md:flex-row p-6 pt-15 bg-gradient-to-b from-green-300 to-gray-200 items-center justify-between">
       {/* Left Side */}
       <div className='md:w-1/2 p-10'>
         <h1 className='text-3xl md:text-5xl font-bold'>
-        Welcome to Shop.
+        Welcome to Shop
         </h1>
-        <p className='mt-4 text-gray-600'>
+        <p className='mt-4 text-gray-600 text-xl font-semibold'>
           Best products at amazing prices.
         </p>
-        <button className='mt-6 px-6 py-2 bg-red-500 text-white rounded-lg'>
-        shop now
+        <button className='mt-6 px-6 py-2 bg-red-500 text-white rounded-full cursor-pointer hover:bg-orange-600'>
+        Shop Now
         </button>
       </div>
       {/* Right Side */}

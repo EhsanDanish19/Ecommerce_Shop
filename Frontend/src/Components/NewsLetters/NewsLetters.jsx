@@ -13,7 +13,7 @@ const NewsLetters = () => {
           className="flex-1 px-4 py-2 outline-none"
         />
 
-        <button className="bg-gray-900 text-white px-8 py-2 rounded-3xl cursor-pointer">
+        <button className="bg-gray-900 text-white px-8 py-2 rounded-3xl cursor-pointer -ml-4">
           Subscribe
         </button>
 
