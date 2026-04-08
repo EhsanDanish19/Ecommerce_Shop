@@ -31,8 +31,8 @@ const ShopCategory = (props) => {
           })}
         </div>
       </div>
-      <div className='border-2 rounder-full bg-gray-400'>
-        <button className='px-7 py-3 font-semibold text-black-400 text-lg'>Explore more</button>
+      <div className='border-1 border-gray-500 shadow-xl rounded-full bg-gray-300 w-40 mx-auto flex mb-5 hover:bg-gray-400'>
+        <button className='flex mx-auto py-2 font-semibold text-black-400 text-lg cursor-pointer'>Explore more</button>
       </div>
     </div>
   )
