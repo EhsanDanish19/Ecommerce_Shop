@@ -5,13 +5,13 @@ import Item from '../Components/Item/Item';
 const ShopCategory = (props) => {
   const { all_product } = useContext(ShopContext);
   return (
-    <div className='m-0 md:m-20 md:mt-10 lg:m-50 lg:mt-10 p-5'>
+    <div className='m-0 md:mx-20 md:mt-10 lg:mx-50 lg:mt-10 p-5'>
       <img className='w-full h-120' src={props.banner} alt='' />
       <div className='m-16'>
         <div className='grid md:grid-cols-2  items-center pb-10 '>
           {/* Left side */}
           <p className='text-left font-semibold text-gray-800'>
-            <span className='mr-2'>Showing 1-12</span> out of 36 products
+            <span className='mr-2'>Showing 1-12</span>out of 36 products
           </p>
 
           {/* Right Side */}
@@ -30,6 +30,9 @@ const ShopCategory = (props) => {
             }
           })}
         </div>
+      </div>
+      <div className='border-2 rounder-full bg-gray-400'>
+        <button className='px-7 py-3 font-semibold text-black-400 text-lg'>Explore more</button>
       </div>
     </div>
   )
