@@ -4,6 +4,7 @@ import BredCrums from '../Components/BredCrums';
 import ProductDisplay from '../Components/ProductDisplay';
 import { useParams } from 'react-router-dom';
 import Descriptions from '../Components/Descriptions';
+import RelatedProduct from '../Components/RelatedProduct';
 
 const Products = () => {
   const {all_product} = useContext(ShopContext);
@@ -14,6 +15,7 @@ const product = all_product.find((e) => e.id === Number(productId))
       <BredCrums product={product} />
       <ProductDisplay product={product}/>
       <Descriptions/>
+      <RelatedProduct/>
     </div>
   )
 }
