@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import star_icon from '../assets/star_icon.png'
 import star_half_icon from '../assets/star_half_icon.png'
+import { ShopContext } from '../Context/ShopContext';
 const ProductDisplay = (props) => {
   const { product } = props;
+  const {addToCart} = useContext(ShopContext);
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 p-10 md:mx-5 lg:mx-30 mb-5'>
       {/* Left Side */}
@@ -48,7 +50,7 @@ const ProductDisplay = (props) => {
             <div className='border border-gray-500 shadow-xl py-1  text-center w-10 flex-shrink-0'>XL</div>
             <div className='border border-gray-500 shadow-xl py-1  text-center w-10 flex-shrink-0'>XXL</div>
           </div>
-          <button className='bg-orange-600 w-full lg:w-[400px] p-2 text-white font-semibold text-xl hover:bg-orange-500 cursor-pointer my-2 outline-none'>ADD TO CART</button>
+          <button onClick={()=>{addToCart(product.id)}} className='bg-orange-600 w-full lg:w-[400px] p-2 text-white font-semibold text-xl hover:bg-orange-500 cursor-pointer my-2 outline-none'>ADD TO CART</button>
         </div>
         <div>
           <span>Category: <span>Women, T_Shirt , Crop Top</span></span>

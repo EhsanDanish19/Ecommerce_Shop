@@ -4,7 +4,8 @@ import BredCrums from '../Components/BredCrums';
 import ProductDisplay from '../Components/ProductDisplay';
 import { useParams } from 'react-router-dom';
 import Descriptions from '../Components/Descriptions';
-import RelatedProduct from '../Components/RelatedProduct';
+import RelatedProduct from '../Components/RelatedPRoduct';
+
 
 const Products = () => {
   const {all_product} = useContext(ShopContext);
