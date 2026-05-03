@@ -1,18 +1,18 @@
 import Item from '../Item/Item'
 import React, { useEffect, useState } from 'react'
+import {BASE_URL } from '../../api'
 
 const Popular = () => {
   const [products, setProducts] = useState([]);
 
 useEffect(() => {
-  fetch("http://127.0.0.1:8000/api/popular/")
+  fetch(`${BASE_URL}/api/popular/`)
     .then(res => res.json())
     .then(data => {
-      console.log("POPULAR DATA:", data); // 👈 check here
       setProducts(data);
-    });
+    })
+    .catch(err => console.error("Error:", err));
 }, []);
-
   return (
     <div className='flex items-center flex-col pb-15 pt-15 bg-gradient-to-b from-gray-200 to-green-300'>
       
