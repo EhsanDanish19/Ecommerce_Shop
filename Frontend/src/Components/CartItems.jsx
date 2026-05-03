@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { ShopContext } from '../Context/ShopContext'
 import remove_icon from '../assets/remove_icon.png'
 const CartItems = () => {
-    const { all_product, cartItems, removeFromCart } = useContext(ShopContext)
+    const {getTotalCartAmount, all_product, cartItems, removeFromCart } = useContext(ShopContext)
 
     return (
         <div>
@@ -37,7 +37,7 @@ const CartItems = () => {
                     <h1 className='text-gray-800 font-bold text-4xl'>Total Carts</h1>
                     <div className='text-gray-800 flex justify-between p-5'>
                         <p>Subtotal</p>
-                        <p>${0}</p>
+                        <p>${getTotalCartAmount()}</p>
                     </div>
                     <hr />
                     <div className='p-5 flex justify-between'>
@@ -47,7 +47,7 @@ const CartItems = () => {
                     <hr />
                     <div className='flex p-5 justify-between'>
                         <p>Total</p>
-                        <p>${0}</p>
+                        <p>${getTotalCartAmount()}</p>
                     </div>
 
                     <button className='bg-red-400 py-2 px-2 rounded-lg'>PROCEED TO CHECKOUT</button>
