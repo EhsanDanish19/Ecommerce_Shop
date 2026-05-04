@@ -28,14 +28,14 @@ const Products = () => {
   return (
     <div>
     
-       (
-        <>
+       
+        
           <BredCrums product={product} />
-          <ProductDisplay product={product} />
+          <ProductDisplay key={product.id} product={product} />
           <Descriptions />
           <RelatedProduct products={related} />
-        </>
-      )
+        
+      
     </div>
   )
 }

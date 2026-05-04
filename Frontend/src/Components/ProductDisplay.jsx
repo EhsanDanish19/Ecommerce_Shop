@@ -2,20 +2,23 @@ import React, { useContext } from 'react'
 import star_icon from '../assets/star_icon.png'
 import star_half_icon from '../assets/star_half_icon.png'
 import { ShopContext } from '../Context/ShopContext';
+import { BASE_URL } from '../api';
+
 const ProductDisplay = (props) => {
   const { product } = props;
+    console.log("DISPLAY PRODUCT:", product); // 👈 HERE
   const {addToCart} = useContext(ShopContext);
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 p-10 md:mx-5 lg:mx-30 mb-5'>
       {/* Left Side */}
       <div className='flex '>
         <div className=''>
-          <img className=' h-30' src={product.image} alt="" />
-          <img className='my-5 h-30' src={product.image} alt="" />
-          <img className=' h-30' src={product.image} alt="" />
+          <img className=' h-30' src={`${BASE_URL}${product.image}`}  alt="" />
+          <img className='my-5 h-30' src={`${BASE_URL}${product.image}`} alt="" />
+          <img className=' h-30' src={`${BASE_URL}${product.image}`} alt="" />
         </div>
         <div>
-          <img className=' ml-5 h-100' src={product.image} alt='' />
+          <img className=' ml-5 h-100' src={`${BASE_URL}${product.image}`} alt='' />
         </div>
       </div>
       {/* Right Side */}
