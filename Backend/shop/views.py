@@ -1,3 +1,5 @@
+from multiprocessing import context
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -34,3 +36,9 @@ def product_details(request, id):
         "product": ProductSerializer(product).data,
         "related": ProductSerializer(related_products, many=True).data
     })
+
+@api_view(['GET'])
+def product_by_category(request, category):
+    product = Product.objects.filter(category=category)
+    serializer = ProductSerializer(product, many=True, context={'request':request})
+    return Response(serializer.data)

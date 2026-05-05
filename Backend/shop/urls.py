@@ -6,6 +6,8 @@ urlpatterns = [
     path('popular/', popular_products),
     path('product/<int:id>/', product_details),
     path('new/', new_products),
+    path('products/<str:category>/', product_by_category),
+    
     
 
 ]
