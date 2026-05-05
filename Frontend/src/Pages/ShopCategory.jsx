@@ -1,9 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../Context/ShopContext'
 import dropdown_icon from '../assets/dropdown.svg'
 import Item from '../Components/Item/Item';
+import { BASE_URL } from '../api';
+
 const ShopCategory = (props) => {
+
   const { all_product } = useContext(ShopContext);
+  const [products, setProducts] = useState([]);
+
+  useEffect(()=>{
+fetch(`${BASE_URL}/api/products/${props.category}/`)
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data)
+      setProducts(data);
+    })
+    .catch(err=>console.error(err));
+    
+  },([props.category]));
+
   return (
     <div className='m-0 md:mx-20 md:mt-10 lg:mx-50 lg:mt-10 p-5'>
       <img className='w-full h-120' src={props.banner} alt='' />
@@ -22,12 +38,10 @@ const ShopCategory = (props) => {
           </div>
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10'>
-          {all_product.map((item, i) => {
-            if (props.category === item.category) {
-              return <Item key={i} id={item.id} name={item.name} image={item.image} new_price={item.new_price} old_price={item.old_price} />
-            } else {
-              return null;
-            }
+          {products.map((item) => {
+            
+              return <Item key={item.id} id={item.id} name={item.name} image={item.image} new_price={item.new_price} old_price={item.old_price} />
+            
           })}
         </div>
       </div>

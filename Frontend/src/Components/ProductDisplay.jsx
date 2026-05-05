@@ -6,7 +6,6 @@ import { BASE_URL } from '../api';
 
 const ProductDisplay = (props) => {
   const { product } = props;
-    console.log("DISPLAY PRODUCT:", product); // 👈 HERE
   const {addToCart} = useContext(ShopContext);
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 p-10 md:mx-5 lg:mx-30 mb-5'>
