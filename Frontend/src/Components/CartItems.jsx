@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
 import { ShopContext } from '../Context/ShopContext'
 import remove_icon from '../assets/remove_icon.png'
+import { BASE_URL } from '../api'
 const CartItems = () => {
-    const {getTotalCartAmount, all_product, cartItems, removeFromCart } = useContext(ShopContext)
+    const {getTotalCartAmount, all_product, cartItems, removeFromCart, increaseQty, decreaseQty } = useContext(ShopContext)
 
     return (
         <div>
@@ -10,28 +11,78 @@ const CartItems = () => {
                 <p >Products</p>
                 <p>Title</p>
                 <p>Price</p>
+                <p>Size</p>
                 <p>Quantity</p>
                 <p>Total</p>
                 <p>Remove</p>
             </div>
             <hr className='h-3' />
 
-            {all_product.map((e) => {
-                if (cartItems[e.id] > 0) {
-                    return <>
-                        <div className='flex items-center justify-between font-semibold text-gray-500 mx-10 md:mx-30 my-5'>
-                            <img src={e.image} alt='' className='h-30' />
-                            <p className='md:-ml-15'>{e.name}</p>
-                            <p className='md:-ml-10'>${e.new_price}</p>
-                            <button className='h-8 w-20 border'>{cartItems[e.id]}</button>
-                            <p className=' '>{e.new_price * cartItems[e.id]}</p>
-                            <img className=' h-6 cursor-pointer' src={remove_icon} alt='' onClick={() => removeFromCart(e.id)} />
-                        </div>
-                        <hr />
-                    </>
-                }
-                return null;
-            })}
+           {all_product.map((e) => {
+
+    return Object.keys(cartItems).map((key) => {
+
+        const productId = key.split("_")[0]
+        const size = key.split("_")[1]
+
+        if (Number(productId) === e.id && cartItems[key] > 0) {
+
+            return (
+                <div
+                    key={key}
+                    className='flex items-center justify-between font-semibold text-gray-500 mx-10 md:mx-30 my-5'
+                >
+                    <img     src={`${BASE_URL}${e.image}`}
+ alt='' className='h-30' />
+
+                    <p>{e.name}</p>
+
+                    <p>${e.new_price}</p>
+
+                    <p>Size: {size}</p>
+
+                    <div className='flex items-center gap-2'>
+    
+    {/* minus button */}
+    <button
+        onClick={() => decreaseQty(key)}
+        className='w-8 h-8 border'
+    >
+        -
+    </button>
+
+    {/* quantity */}
+    <button className='w-10 h-8 border'>
+        {cartItems[key]}
+    </button>
+
+    {/* plus button */}
+    <button
+        onClick={() => increaseQty(key)}
+        className='w-8 h-8 border cursor-pointer'
+    >
+        +
+    </button>
+
+</div>
+
+                    <p>
+                        {e.new_price * cartItems[key]}
+                    </p>
+
+                    <img
+                        className='h-6 cursor-pointer'
+                        src={remove_icon}
+                        alt=''
+                        onClick={() => removeFromCart(key)}
+                    />
+                </div>
+            )
+        }
+
+        return null
+    })
+})}
             <div className='mx-10 md:mx-20 lg:mx-50 xl:mx-80 md:flex justify-between items-center gap-10 text-xl font-semibold mb-20 md:mb-40 mt-20'>
                 <div className='text-2xl mb-5'>
                     <h1 className='text-gray-800 font-bold text-4xl'>Total Carts</h1>
