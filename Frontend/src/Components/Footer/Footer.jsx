@@ -6,7 +6,7 @@ import whatsappp from '../../assets/whatsapp.webp'
 import facebook from '../../assets/facebook.avif'
 const Footer = () => {
   return (
-    <div className='flex flex-col items-center p-5 pt-0'>
+    <div className='flex flex-col items-center p-5 pt-20'>
       <div className='flex items-center font-bold text-5xl gap-4'>
       <img src={footer_logo} alt='' className='w-15'/>
         <h1>Shopify</h1>

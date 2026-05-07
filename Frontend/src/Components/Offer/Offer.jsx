@@ -1,5 +1,6 @@
 import React from 'react'
 import offer from "../../assets/offer.png"
+import { Link } from 'react-router-dom'
 const Offer = () => {
   return (
     <div className='grid grid-cols md:grid-cols-2 direction-col justify-center items-center pt-10 lg:pl-40 bg-green-100'>
@@ -7,7 +8,9 @@ const Offer = () => {
       <h1 className='text-[#324232] text-5xl font-bold'>Exclusive</h1>
       <h1 className='text-[#324232] text-5xl font-bold mb-2'>Offers For You</h1>
       <p className='mb-3 text-sl font-bold text-[#424242]'>ONLY ON BEST SELLERS PRODUCTS</p>
+      <Link to="/popular">
       <button className='bg-red-500 rounded-full mt-1 text-white w-35 h-9 text-sm'>Check Now</button>
+      </Link>
       </div>
       <div className='mt-3 lg:ml-20 pl-20'>
       <img src={offer} alt='' className='w-70'/>

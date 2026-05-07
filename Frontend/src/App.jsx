@@ -9,6 +9,8 @@ import Footer from "./Components/Footer/Footer"
 import men_banner from "./assets/men-banner1.jfif"
 import women_banner from "./assets/women-banner1.jfif"
 import kid_banner from "./assets/kid-banner1.jfif"
+import NewCollection from "./Components/NewCollection/NewCollection"
+import Popular from "./Components/Popular/Popular"
 
 function App() {
 
@@ -23,6 +25,8 @@ function App() {
     <Route path="/kids" element={<ShopCategory banner={kid_banner} category="kids"/>} />
     <Route path="/product" element={<Products/>} />
     <Route path="/product/:productId" element={<Products/>} />
+    <Route path="/new_collection" element={<NewCollection/>} />
+    <Route path="/popular" element={<Popular/>} />
     <Route path="/cart" element={<Carts/>} />
     <Route path="login" element={<Login/>} />
 

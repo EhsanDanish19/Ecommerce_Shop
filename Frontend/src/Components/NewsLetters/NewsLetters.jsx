@@ -5,7 +5,7 @@ const NewsLetters = () => {
     <div className='text-center'>
       <h1 className='font-semibold text-gray-700 text-4xl md:text-5xl p-5 pb-0 '>Get Exclusive Offers on Your Email</h1>
       <p className='text-2xl font-semibold text-gray-600 m-5'>Subscribe to our newsletter and stay updated.</p>
-      <div className="flex items-center border border-gray-400 rounded-full w-80 md:w-150 mx-auto mt-9 mb-20 overflow-hidden">
+      <div className="flex items-center border border-gray-400 rounded-full w-80 md:w-150 mx-auto mt-9 overflow-hidden">
 
         <input
           type="email"

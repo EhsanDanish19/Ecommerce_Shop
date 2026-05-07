@@ -1,5 +1,6 @@
 import React from 'react'
 import HeroImg from '../../assets/shoping.jpg'
+import { Link } from 'react-router-dom'
 const Hero = () => {
   return (
     <div className="flex flex-col md:flex-row p-6 pt-15 bg-gradient-to-b from-green-300 to-gray-200 items-center justify-between">
@@ -11,9 +12,11 @@ const Hero = () => {
         <p className='mt-4 text-gray-600 text-xl font-semibold'>
           Best products at amazing prices.
         </p>
+        <Link to="/new_collection">
         <button className='mt-6 px-6 py-2 bg-red-500 text-white rounded-full cursor-pointer hover:bg-orange-600'>
         Shop Now
         </button>
+        </Link>
       </div>
       {/* Right Side */}
       <div className='md:w-1/2 mt-6 md:mt-0 flex justify-center'>

@@ -28,8 +28,6 @@ const Products = () => {
   return (
     <div>
     
-       
-        
           <BredCrums product={product} />
           <ProductDisplay key={product.id} product={product} />
           <Descriptions />
