@@ -23,10 +23,10 @@ const CartItems = () => {
             <div className='border border-gray-200'>
 
                 {/* Header*/}
-                <div className='hidden border-b border-gray-200 md:grid md:grid-cols-[2fr_1fr_1fr_1fr_1fr]  text-gray-500 text-lg font-medium '>
+                <div className='hidden border-b border-gray-200 md:grid md:grid-cols-[2fr_1fr_1fr_1fr]  text-gray-700 text-lg font-bold '>
                     <div className='p-6 text-center border-r border-gray-200'>Products</div>
                     <div className='p-6 text-center border-r border-gray-200'>Price</div>
-                    <div className='p-6 text-center border-r border-gray-200'>Size</div>
+                    {/* <div className='p-6 text-center border-r border-gray-200'>Size</div> */}
                     <div className='p-6 text-center border-r border-gray-200'>Quantity</div>
                     <div className='p-6 text-center border-r border-gray-200'>Subtotal</div>
                 </div>
@@ -43,60 +43,60 @@ const CartItems = () => {
                             return (
                                 <div
                                     key={key}
-                                    className='grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr_1fr] border-b '
+                                    className='grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] border-b border-gray-200'
                                 >
 
                                     {/* Product */}
                                     <div className=' flex gap-5 p-6 border-r border-gray-200'>
                                         <img src={`${BASE_URL}${e.image}`} alt='' className=' w-28 h-30 object-cover' />
-
                                         <div className='flex flex-col justify-center'>
-                                            <h1 className='text-lg font-semibold text-gray-800'>{e.name}</h1>
+                                            <h1 className='text-lg font-bold text-gray-1000'>{e.name}</h1>
 
                                             <div className='flex gap-3 mt-3'>
-                                                <button className='text-sm text-gray-500 hover:text-black'>
+                                                <button >
                                                     <img src={pencil_icon} alt='' className='h-4 cursor-pointer' />
                                                 </button>
-                                                <button className='text-sm text-gray-500 hover:text-black'>
+                                                <button className='text-sm text-gray-800 hover:text-black'>
                                                     <img src={delete_icon} alt='' className='h-5 cursor-pointer' onClick={() => removeFromCart(key)}
-/>
+                                                    />
                                                 </button>
                                             </div>
+                                        </div>
+                                        <div className='hidden md:flex mt-8'>
+                                            <p className='text-gray-1000 font-bold text-lg'>Size :&nbsp; </p>
+
+                                            <p className='text-gray-900 font-semibold text-lg'>{size}</p>
+
                                         </div>
                                     </div>
 
                                     {/* Price */}
                                     <div className=' flex items-center justify-center border-r border-gray-200 p-6'>
-                                        <p className='text-gray-500 text-lg'>RS : {e.new_price}</p>
+                                        <p className='text-gray-800 text-lg'>RS : {e.new_price}</p>
                                     </div>
 
-                                    {/* Sizes */}
-                                    <div className=' flex items-center justify-center border-r border-gray-200 p-6'>
-                                        <p className='text-gray-500 mt-1'>Size: {size}</p>
-
-                                    </div>
 
                                     {/* Quantity */}
                                     <div className='flex items-center justify-center border-r border-gray-200 p-6'>
-                                        <div className='flex items-center gap-6 border border-gray-400 rounded-full px-5 py-2'>
+                                        <div className='flex items-center gap-6 border border-gray-200 rounded-full px-5 py-2'>
 
                                             {/* minus button */}
                                             <button
                                                 onClick={() => decreaseQty(key)}
-                                                className='cursor-pointer'
+                                                className='cursor-pointer font-bold text-xl text-center'
                                             >
                                                 -
                                             </button>
 
                                             {/* quantity */}
-                                            <button className='cursor-pointer '>
+                                            <p className='font-bold'>
                                                 {cartItems[key]}
-                                            </button>
+                                            </p>
 
                                             {/* plus button */}
                                             <button
                                                 onClick={() => increaseQty(key)}
-                                                className='cursor-pointer'
+                                                className='cursor-pointer font-bold text-xl'
                                             >
                                                 +
                                             </button>
@@ -104,11 +104,17 @@ const CartItems = () => {
                                         </div>
                                     </div>
 
+                                    {/* Size for mobile screen */}
+                                    <div className='sm:flex md:hidden flex items-center justify-center border-r border-gray-200 p-6'>
+                                        <p className='text-gray-500 font-bold text-lg'>Size :&nbsp;</p>
+                                        <p className='text-gray-500 font-semibold text-lg'>{size}</p>
+                                    </div>
+
                                     {/* Subtotal */}
                                     <div className='flex items-center justify-center p-6'>
-                                    <p className='text-md font-medium text-gray-700'>
-                                        RS : {e.new_price * cartItems[key]}
-                                    </p>
+                                        <p className='text-md font-medium text-gray-800'>
+                                            RS : {e.new_price * cartItems[key]}
+                                        </p>
                                     </div>
                                 </div>
                             )
