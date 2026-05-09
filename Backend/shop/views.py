@@ -1,10 +1,36 @@
-from multiprocessing import context
 
+from django.contrib.auth import authenticate
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Product
-from .serializers import ProductSerializer
+from .serializers import ProductSerializer, RegisterSerializer
+
+@api_view(['POST'])
+def register_user(request):
+    serializer = RegisterSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response({
+            'message': 'User Registered Successfully'
+        })
+
+    return Response(serializer.errors)
+
+@api_view(['POST'])
+def login_view(request):
+
+    username = request.data.get('username')
+    password = request.data.get('password')
+    print("USERNAME:", username)
+    print("PASSWORD:", password)
+    user = authenticate(username=username, password=password)
+
+    if user is not None:
+        return Response({"message": "Login success"})
+    
+    return Response({"error": "Invalid Username or Password"}, status=400)
 
 @api_view(['GET'])
 def all_products(request):
