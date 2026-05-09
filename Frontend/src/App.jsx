@@ -5,6 +5,7 @@ import ShopCategory from "./Pages/ShopCategory"
 import Products from "./Pages/Products"
 import Carts from "./Pages/Carts"
 import Login from "./Pages/Login"
+import Register from "./Pages/Register"
 import Footer from "./Components/Footer/Footer"
 import men_banner from "./assets/men-banner1.jfif"
 import women_banner from "./assets/women-banner1.jfif"
@@ -28,7 +29,8 @@ function App() {
     <Route path="/new_collection" element={<NewCollection/>} />
     <Route path="/popular" element={<Popular/>} />
     <Route path="/cart" element={<Carts/>} />
-    <Route path="login" element={<Login/>} />
+    <Route path="/login" element={<Login/>} />
+    <Route path="/register" element={<Register/>} />
 
     </Routes>
     <Footer/>
