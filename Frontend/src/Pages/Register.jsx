@@ -42,6 +42,7 @@ const Register = () => {
                     password: formData.password
                 }
             )
+            navigate('/login')
             alert("Registration Successful")
 
         } catch (error) {

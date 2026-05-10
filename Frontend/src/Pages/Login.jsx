@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import bgImage from '../assets/register_banner.avif'
 import bg from '../assets/bg.webp'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../api'
 
 const Login = () => {
@@ -36,6 +36,7 @@ const Login = () => {
         'token',
         res.data.access
       )
+      navigate('/cart')
       alert('Login Successful')
 
     } catch (error) {
@@ -59,7 +60,11 @@ const Login = () => {
 
             <button className='border-1 rounded-full bg-red-500 mx-auto cursor-pointer py-1 px-8 my-2 mt-3 hover:bg-red-400' type='submit'>Login</button>
           </div>
-          <p className='font-semibold'>Don't have an account ? <span className='text-blue-600 font-semibold'>Register Here</span></p>
+          <p className='font-semibold'>Don't have an account ? 
+          <Link to={'/register'}>
+          <span className='text-blue-600 font-semibold'>Register Here</span>
+          </Link>
+          </p>
         </div>
       </div>
     </form>
