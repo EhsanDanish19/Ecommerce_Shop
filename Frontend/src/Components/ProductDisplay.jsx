@@ -3,14 +3,59 @@ import star_icon from '../assets/star_icon.png'
 import star_half_icon from '../assets/star_half_icon.png'
 import { ShopContext } from '../Context/ShopContext';
 import { BASE_URL } from '../api';
-import { data, useParams } from 'react-router-dom';
+import { data, useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 
 const ProductDisplay = (props) => {
+
   const { addToCart } = useContext(ShopContext);
   const { product } = props;
   const [selectedSize, setSelectedSize] = useState(null)
+
+  const navigate= useNavigate();
+
+  const handleAddToCart = async () => {
+
+    const token = localStorage.getItem("token");
+
+    if (!token){
+      localStorage.setItem("redirectAfterLogin", window.location.pathname);
+      navigate("/login");
+      return;
+    }
+
+    if (!selectedSize){
+      alert("Please select size")
+      return;
+    }
+
+    try{
+
+      await axios.post(
+        `${BASE_URL}/api/add_to_cart/`,
+        {
+          product: product.id,
+          size:selectedSize,
+          quantity:1
+        },
+        {
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
+        }
+      );
+      alert("Product added to cart")
+
+    } catch(error){
+      console.log(error);
+      if (error.response?.status === 401){
+        navigate("/login")
+      }
+    }
+    
+  }
   //   const {productId} =useParams();
   //   const [products, setProducts] = useState([]);
 
@@ -72,7 +117,7 @@ const ProductDisplay = (props) => {
               </div>
             ))}
           </div>
-          <button onClick={() => { addToCart(product, selectedSize) }} className='bg-orange-600 w-full lg:w-[400px] p-2 text-white font-semibold text-xl hover:bg-orange-500 cursor-pointer my-2 outline-none'>ADD TO CART</button>
+          <button onClick={handleAddToCart} className='bg-orange-600 w-full lg:w-[400px] p-2 text-white font-semibold text-xl hover:bg-orange-500 cursor-pointer my-2 outline-none'>ADD TO CART</button>
         </div>
         <div>
           <span>Category: <span>{product.category}, {product.name} , Crop Top</span></span>

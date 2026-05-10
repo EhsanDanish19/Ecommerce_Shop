@@ -30,17 +30,38 @@ const Login = () => {
         loginData
       )
 
+      // Save token
+      localStorage.setItem(
+        'token',
+        res.data.access
+      )
       console.log(res.data)
 
       localStorage.setItem(
         'token',
         res.data.access
       )
-      navigate('/cart')
+
+      
       alert('Login Successful')
 
+      // redirect back
+      const redirectPath = localStorage.getItem(
+        "redirectAfterLogin"
+      )
+
+      if (redirectPath){
+        navigate(redirectPath);
+
+        localStorage.removeItem(
+          "redirectAfterLogin"
+        );
+      } else{
+        navigate('/');
+      }
+
     } catch (error) {
-      console.log("ERROR:",error.res?.data)
+      console.log(error)
           alert("Invalid username or password")
 
     }
