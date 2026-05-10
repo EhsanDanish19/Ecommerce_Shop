@@ -91,6 +91,15 @@ const ShopContextProvider = (props) => {
         return total
     }
 
+    //Update Carts
+    const updateCart = ()=>{
+        localStorage.setItem(
+            "cartItems",
+            JSON.stringify(cartItems)
+        )
+
+        alert("Cart updated successfully")
+    }
     const contextValue = {
         all_product,
         cartItems,
@@ -100,6 +109,7 @@ const ShopContextProvider = (props) => {
         getTotalCartItems,
         increaseQty,
         decreaseQty,
+        updateCart,
     }
 
     return (

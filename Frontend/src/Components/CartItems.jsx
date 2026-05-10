@@ -4,6 +4,7 @@ import remove_icon from '../assets/remove_icon.png'
 import { BASE_URL } from '../api'
 import pencil_icon from '../assets/pencile.png'
 import delete_icon from '../assets/delete.png'
+import { Link } from 'react-router-dom'
 
 const CartItems = () => {
 
@@ -13,7 +14,8 @@ const CartItems = () => {
         cartItems,
         removeFromCart,
         increaseQty,
-        decreaseQty
+        decreaseQty,
+        updateCart,
     } = useContext(ShopContext)
 
     return (
@@ -123,6 +125,20 @@ const CartItems = () => {
                         return null
                     })
                 })}
+            </div>
+            <div className='md:flex items-center justify-between  px-5 py-5'>
+                <div className='text-center px-5 py-3'>
+                    <Link to={'/'}>
+                        <span className=''>
+                            Continnue Shoping
+                        </span>
+                    </Link>
+                </div>
+                <div className='text-center px-5 py-3 border border-gray-500'>
+                    <button className='' onClick={updateCart}>
+                        Update Shoping Carts
+                    </button>
+                </div>
             </div>
             <div className='mx-10 md:mx-20 lg:mx-50 xl:mx-80 md:flex justify-between items-center gap-10 text-xl font-semibold mb-20 md:mb-40 mt-20'>
                 <div className='text-2xl mb-5'>
