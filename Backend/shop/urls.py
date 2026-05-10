@@ -10,6 +10,7 @@ urlpatterns = [
     path('product/<int:id>/', product_details),
     path('new/', new_products),
     path('products/<str:category>/', product_by_category),
+    path('add_to_cart/', add_to_cart)
     
     
 

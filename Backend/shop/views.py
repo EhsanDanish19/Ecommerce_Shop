@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Product
-from .serializers import ProductSerializer, RegisterSerializer
+from .serializers import *
 
 @api_view(['POST'])
 def register_user(request):
@@ -68,3 +68,41 @@ def product_by_category(request, category):
     product = Product.objects.filter(category=category)
     serializer = ProductSerializer(product, many=True, context={'request':request})
     return Response(serializer.data)
+
+
+
+
+#new
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_to_cart(request):
+
+    product_id = request.data.get('product')
+    size = request.data.get('size')
+    quantity = request.data.get('quantity', 1)
+    user_id = request.data.get('user')
+
+    product = Product.objects.get(id=product_id)
+    
+    user = request.user
+
+
+    cart_item, created = Cart.objects.get_or_create(
+        user=user,
+        product=product,
+        size=size
+    )
+
+    if not created:
+        cart_item.quantity += quantity
+    else:
+        cart_item.quantity = quantity
+
+    cart_item.save()
+
+    return Response({
+        "message": "Added to cart"
+    })

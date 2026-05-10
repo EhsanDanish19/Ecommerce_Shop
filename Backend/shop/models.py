@@ -1,10 +1,7 @@
 
 
-
-from turtle import back
-
 from django.db import models
-
+from django.contrib.auth.models import User
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
@@ -39,3 +36,25 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Cart(models.Model):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE
+    )
+
+    size = models.CharField(max_length=20)
+
+    quantity = models.PositiveIntegerField(default=1)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name}"
