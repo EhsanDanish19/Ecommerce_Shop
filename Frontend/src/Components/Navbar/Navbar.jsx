@@ -9,7 +9,7 @@ import { ShopContext } from '../../Context/ShopContext'
 const Navbar = () => {
     const [menu, setMenu] = useState()
     const [open, setOpen] = useState(false)
-    const {getTotalCartItems} = useContext(ShopContext)
+    const {getTotalItems} = useContext(ShopContext)
 
     return (
         <div className="navbar shadow-md px-14 py-3">
@@ -66,7 +66,7 @@ const Navbar = () => {
                     <div className="relative">
                         <Link to="/cart"><img src={cartIcon} alt="" className=" nav-cart w-8" /></Link>
                         <div className="nav-count absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                            {getTotalCartItems()}
+                            {getTotalItems()}
                         </div>
                     </div>
 

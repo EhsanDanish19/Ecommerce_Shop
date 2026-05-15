@@ -1,120 +1,202 @@
-import React, { createContext, useState, useEffect } from "react"
+import React, {
+    createContext,
+    useEffect,
+    useState
+} from "react"
+
+import axios from "axios"
 import { BASE_URL } from "../api"
 
 export const ShopContext = createContext(null)
 
-const ShopContextProvider = (props) => {
+const ShopContextProvider = ({ children }) => {
 
     const [all_product, setAll_product] = useState([])
+    const [cartData, setCartData] = useState([])
 
-    const [cartItems, setCartItems] = useState({})
+    // ==============================
+    // FETCH PRODUCTS
+    // ==============================
+    const fetchProducts = async () => {
 
-    // FETCH PRODUCTS FROM BACKEND
-    useEffect(() => {
-        fetch(`${BASE_URL}/api/products/`)
-            .then(res => res.json())
-            .then(data => setAll_product(data))
-            .catch(err => console.log(err))
-    }, [])
+        try {
 
-    // ADD TO CART
-    const addToCart = (product, size) => {
-        if (!size) {
-            alert("Please select a size")
-            return
-        }
-
-        const itemKey = product.id + "_" + size
-
-        setCartItems(prev => ({
-            ...prev,
-            [itemKey]: (prev[itemKey] || 0) + 1
-        }))
-    }
-
-    // Increase quantity
-    const increaseQty= (key)=> {
-        setCartItems(prev=>({
-            ...prev,[key]:prev[key]+1
-        }))
-    }
-
-    //Decrease quantity
-    const decreaseQty=(key)=>{
-        setCartItems(prev=>{
-            const updateQty = prev[key] - 1
-            if (updateQty <= 0){
-                const newCart = {...prev }
-                delete newCart[key]
-                return newCart
-            }
-            return {
-                ...prev, [key]:updateQty
-            }
-        })
-    }
-    // REMOVE
-    const removeFromCart = (itemKey) => {
-        setCartItems(prev => {
-            const newCart = {...prev}
-            delete newCart[itemKey]
-            return newCart
-        })
-    }
-
-    // TOTAL AMOUNT
-    const getTotalCartAmount = () => {
-        let totalAmount = 0
-
-        for (const item in cartItems) {
-
-            const productId = item.split("_")[0]
-
-            const product = all_product.find(
-                p => p.id === Number(productId)
+            const res = await axios.get(
+                `${BASE_URL}/api/products/`
             )
 
-            if (product) {
-                totalAmount += product.new_price * cartItems[item]
-            }
-        }
+            setAll_product(res.data)
 
-        return totalAmount
+        } catch (error) {
+            console.log(error)
+        }
     }
 
-    // TOTAL ITEMS
-    const getTotalCartItems = () => {
-        let total = 0
-        for (const item in cartItems) {
-            total += cartItems[item]
+    // ==============================
+    // FETCH CART
+    // ==============================
+    const fetchCart = async () => {
+
+        const token = localStorage.getItem("token")
+
+        if (!token) return
+
+        try {
+
+            const res = await axios.get(
+                `${BASE_URL}/api/cart/`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
+
+            setCartData(res.data)
+
+        } catch (error) {
+            console.log(error)
         }
+    }
+
+    // ==============================
+    // INCREASE QUANTITY
+    // ==============================
+    const increaseQty = async (id) => {
+
+        const token = localStorage.getItem("token")
+
+        try {
+
+            await axios.post(
+                `${BASE_URL}/api/cart/increase/${id}/`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
+
+            fetchCart()
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    // ==============================
+    // DECREASE QUANTITY
+    // ==============================
+    const decreaseQty = async (id) => {
+
+        const token = localStorage.getItem("token")
+
+        try {
+
+            await axios.post(
+                `${BASE_URL}/api/cart/decrease/${id}/`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
+
+            fetchCart()
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    // ==============================
+    // REMOVE ITEM
+    // ==============================
+    const removeItem = async (id) => {
+
+        const token = localStorage.getItem("token")
+
+        try {
+
+            await axios.delete(
+                `${BASE_URL}/api/cart/remove/${id}/`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
+
+            fetchCart()
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    // ==============================
+    // TOTAL AMOUNT
+    // ==============================
+    const getTotalAmount = () => {
+
+        let total = 0
+
+        cartData.forEach((item) => {
+            total += item.subtotal
+        })
+
         return total
     }
 
-    //Update Carts
-    const updateCart = ()=>{
-        localStorage.setItem(
-            "cartItems",
-            JSON.stringify(cartItems)
-        )
+    // ==============================
+    // TOTAL ITEMS
+    // ==============================
+    const getTotalItems = () => {
 
-        alert("Cart updated successfully")
+        let total = 0
+
+        cartData.forEach((item) => {
+            total += item.quantity
+        })
+
+        return total
     }
+
+    // ==============================
+    // LOAD DATA
+    // ==============================
+    useEffect(() => {
+
+        fetchProducts()
+        fetchCart()
+
+    }, [])
+
+
+    
+    // ==============================
+    // CONTEXT VALUE
+    // ==============================
     const contextValue = {
+
         all_product,
-        cartItems,
-        addToCart,
-        removeFromCart,
-        getTotalCartAmount,
-        getTotalCartItems,
+        cartData,
+
+        fetchCart,
+
         increaseQty,
         decreaseQty,
-        updateCart,
+        removeItem,
+
+        getTotalAmount,
+        getTotalItems
     }
 
     return (
         <ShopContext.Provider value={contextValue}>
-            {props.children}
+            {children}
         </ShopContext.Provider>
     )
 }
