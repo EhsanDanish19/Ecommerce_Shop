@@ -149,22 +149,31 @@ const CartItems = () => {
             {/* BOTTOM BUTTONS */}
 
             <div className='md:flex items-center justify-between py-8'>
+                <div className='px-5 py-3 mb-3 text-center border border-gray-400 rounded-full'>
 
-                <Link to={'/'}>
+                    <Link to={'/'}>
 
-                    <button className='border border-gray-400 px-5 py-3'>
+                        <button>
 
-                        Continue Shopping
+                            Continue Shopping
 
+                        </button>
+
+                    </Link>
+                </div>
+
+                <div className='px-5 py-3 mb-3 text-center border border-gray-400 rounded-full'>
+
+                    <button>
+                        <span>Update Shopping Carts</span>
                     </button>
 
-                </Link>
-
+                </div>
             </div>
 
             {/* TOTAL SECTION */}
 
-            <div className='md:flex justify-between gap-20 mt-15'>
+            <div className='md:flex justify-between gap-20'>
 
                 {/* TOTAL */}
 
