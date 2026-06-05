@@ -12,12 +12,12 @@ const Navbar = () => {
     const token = localStorage.getItem('token')
 
     const [username, setUsername] = useState(
-    localStorage.getItem('username')
-)
+        localStorage.getItem('username')
+    )
 
-useEffect(() => {
-    setUsername(localStorage.getItem('username'))
-}, [token])
+    useEffect(() => {
+        setUsername(localStorage.getItem('username'))
+    }, [token])
 
     const [menu, setMenu] = useState()
     const [open, setOpen] = useState(false)
@@ -77,29 +77,31 @@ useEffect(() => {
 
                 {/* Right */}
                 <div className="flex items-center gap-4">
-                    {
-                        token ? (
-                            <div className='flex gap-4 items-center'>
+                    <h1 className='font-semibold text-center'>
+                        Welcome {username}
+                    </h1>
+                    <div className='hidden md:flex'>
+                        {
+                            token ? (
+                                <div className='flex gap-4 items-center'>
 
-                                <h1 className='font-semibold'>
-                                    Welcome {username}
-                                </h1>
 
-                                <button
-                                    onClick={handleLogout}
-                                    className=" w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer"                                >
-                                    Logout
-                                </button>
 
-                            </div>
-                        ) : (
-                            <Link to="/login">
-                                <button className="nav-login w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer">
-                                    Login
-                                </button>
-                            </Link>
-                        )}
+                                    <button
+                                        onClick={handleLogout}
+                                        className=" w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer"                                >
+                                        Logout
+                                    </button>
 
+                                </div>
+                            ) : (
+                                <Link to="/login">
+                                    <button className="nav-login w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer">
+                                        Login
+                                    </button>
+                                </Link>
+                            )}
+                    </div>
                     <div className="relative">
                         <Link to="/cart"><img src={cartIcon} alt="" className=" nav-cart w-8" /></Link>
                         <div className="nav-count absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
@@ -146,7 +148,26 @@ useEffect(() => {
                             Kids
                         </li>
                     </Link>
-                    
+                    {
+                        token ? (
+                            <div className='flex gap-4 items-center'>
+
+                                <button
+                                    onClick={handleLogout}
+                                    className=" w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer"                                >
+                                    Logout
+                                </button>
+
+                            </div>
+                        ) : (
+                            <Link to="/login">
+                                <button className="nav-login w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer">
+                                    Login
+                                </button>
+                            </Link>
+                        )}
+
+
                 </ul>
             )}
 
