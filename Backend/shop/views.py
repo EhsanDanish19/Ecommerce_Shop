@@ -5,8 +5,13 @@ from rest_framework.response import Response
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Product
 from .serializers import *
+
+# ==============================
+# Register
+# ==============================
 
 @api_view(['POST'])
 def register_user(request):
@@ -20,6 +25,10 @@ def register_user(request):
 
     return Response(serializer.errors)
 
+# ==============================
+# Login
+# ==============================
+
 @api_view(['POST'])
 def login_view(request):
 
@@ -29,9 +38,23 @@ def login_view(request):
     user = authenticate(username=username, password=password)
 
     if user is not None:
-        return Response({"message": "Login success"})
+        print("username", user.username)
+
+        refresh = RefreshToken.for_user(user)
+        data={
+            "message": "Login success",
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+            "username":user.username
+            }
+        print(data)
+        return Response(data)
     
     return Response({"error": "Invalid Username or Password"}, status=400)
+
+# ==============================
+# All Products
+# ==============================
 
 @api_view(['GET'])
 def all_products(request):
@@ -39,17 +62,29 @@ def all_products(request):
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
+# ==============================
+# Popular Products
+# ==============================
+
 @api_view(['GET'])
 def popular_products(request):
     products = Product.objects.filter(is_popular=True)
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
+# ==============================
+# New Products
+# ==============================
+
 @api_view(['GET'])
 def new_products(request):
     products = Product.objects.filter(is_new=True)
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
+
+# ==============================
+# Product Details
+# ==============================
 
 @api_view(['GET'])
 def product_details(request, id):
@@ -64,6 +99,10 @@ def product_details(request, id):
         "related": ProductSerializer(related_products, many=True).data
     })
 
+# ==============================
+# Product Category
+# ==============================
+
 @api_view(['GET'])
 def product_by_category(request, category):
     product = Product.objects.filter(category=category)
@@ -71,6 +110,9 @@ def product_by_category(request, category):
     return Response(serializer.data)
 
 
+# ==============================
+# Add To Cart
+# ==============================
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -103,6 +145,9 @@ def add_to_cart(request):
         "message": "Added to cart"
     })
 
+# ==============================
+# Get Carts
+# ==============================
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
