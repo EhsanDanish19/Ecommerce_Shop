@@ -1,16 +1,36 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import logo from "../../assets/logo.png"
 import cartIcon from "../../assets/cart-icon.png"
 import './Navbar.css'
 import "bootstrap-icons/font/bootstrap-icons.css"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ShopContext } from '../../Context/ShopContext'
 
 const Navbar = () => {
+
+    const navigate = useNavigate()
+    const token = localStorage.getItem('token')
+
+    const [username, setUsername] = useState(
+    localStorage.getItem('username')
+)
+
+useEffect(() => {
+    setUsername(localStorage.getItem('username'))
+}, [token])
+
     const [menu, setMenu] = useState()
     const [open, setOpen] = useState(false)
-    const {getTotalItems} = useContext(ShopContext)
+    const { getTotalItems } = useContext(ShopContext)
 
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        console.log("Navbar Token:", token)
+        console.log("Navbar Username:", username)
+        alert("Logout Successfully")
+        navigate('/login')
+    }
     return (
         <div className="navbar shadow-md px-14 py-3">
 
@@ -31,37 +51,54 @@ const Navbar = () => {
                     >
                         Home
                     </li>
-                        </Link>
-                        <Link to="/mens">
-                    <li
-                        className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "mens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("mens")}
-                    >
-                        Men
-                    </li>
-                        </Link>
-                        <Link to="/womens">
-                    <li
-                        className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "womens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("womens")}
-                    >
-                        Women
-                    </li>
-                        </Link>
-                        <Link to="/kids">
-                    <li
-                        className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "kids" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("kids")}
-                    >
-                        Kids
-                    </li>
-                        </Link>
+                    </Link>
+                    <Link to="/mens">
+                        <li
+                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "mens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("mens")}
+                        >
+                            Men
+                        </li>
+                    </Link>
+                    <Link to="/womens">
+                        <li
+                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "womens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("womens")}
+                        >
+                            Women
+                        </li>
+                    </Link>
+                    <Link to="/kids">
+                        <li
+                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "kids" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("kids")}
+                        >
+                            Kids
+                        </li>
+                    </Link>
                 </ul>
 
                 {/* Right */}
                 <div className="flex items-center gap-4">
-                    <Link to="/login">
-                    <button className="nav-login w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer">
-                        Login
-                    </button>
-                        </Link>
+                    {
+                        token ? (
+                            <div className='flex gap-4 items-center'>
+
+                                <h1 className='font-semibold'>
+                                    Welcome {username}
+                                </h1>
+
+                                <button
+                                    onClick={handleLogout}
+                                    className=" w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer"                                >
+                                    Logout
+                                </button>
+
+                            </div>
+                        ) : (
+                            <Link to="/login">
+                                <button className="nav-login w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer">
+                                    Login
+                                </button>
+                            </Link>
+                        )}
 
                     <div className="relative">
                         <Link to="/cart"><img src={cartIcon} alt="" className=" nav-cart w-8" /></Link>
@@ -82,33 +119,34 @@ const Navbar = () => {
             {open && (
                 <ul className="flex flex-col gap-3 mt-4 md:hidden text-gray-600">
                     <Link to="/">
-                                        <li
-                        className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "home" ? "bg-gray-100 text-black" : ""}`}
-                        onClick={() => setMenu("home")}
-                    >
-                    Home    
-                    </li>
+                        <li
+                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "home" ? "bg-gray-100 text-black" : ""}`}
+                            onClick={() => setMenu("home")}
+                        >
+                            Home
+                        </li>
                     </Link>
-                        <Link to="/mens">
-                    <li
-                        className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "mens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("mens")}
-                    >
-                        Men
-                    </li>
-                        </Link>
-                        <Link to="/womens">
-                    <li
-                        className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "womens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("womens")}
-                    >
-                        Women
-                    </li>
-                        </Link>
-                        <Link to="/kids">
-                    <li className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "kids" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("kids")}
-                    >
-                        Kids
-                    </li>
-                        </Link>
+                    <Link to="/mens">
+                        <li
+                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "mens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("mens")}
+                        >
+                            Men
+                        </li>
+                    </Link>
+                    <Link to="/womens">
+                        <li
+                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "womens" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("womens")}
+                        >
+                            Women
+                        </li>
+                    </Link>
+                    <Link to="/kids">
+                        <li className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "kids" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("kids")}
+                        >
+                            Kids
+                        </li>
+                    </Link>
+                    
                 </ul>
             )}
 

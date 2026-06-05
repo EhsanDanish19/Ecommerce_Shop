@@ -29,17 +29,17 @@ const Login = () => {
         `${BASE_URL}/api/login/`,
         loginData
       )
-
+      console.log("Full Response:", res.data)
+      console.log("Username:", res.data.username)
       // Save token
       localStorage.setItem(
         'token',
         res.data.access
       )
-      console.log(res.data)
 
       localStorage.setItem(
-        'token',
-        res.data.access
+        'username',
+        res.data.username
       )
 
       
