@@ -12,12 +12,16 @@ import women_banner from "./assets/women-banner1.jfif"
 import kid_banner from "./assets/kid-banner1.jfif"
 import NewCollection from "./Components/NewCollection/NewCollection"
 import Popular from "./Components/Popular/Popular"
+import AutoLogout from "./Components/AutoLogout"
+
 
 function App() {
 
+  
   return (
     <div>
     <BrowserRouter>
+    <AutoLogout/>
     <Navbar/>
     <Routes>
     <Route path="/" element={<Shop/>} />

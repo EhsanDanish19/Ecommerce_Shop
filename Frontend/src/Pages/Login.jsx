@@ -57,8 +57,7 @@ const Login = () => {
           "redirectAfterLogin"
         );
       } else{
-        navigate('/');
-      }
+window.location.replace('/');      }
 
     } catch (error) {
       console.log(error)
