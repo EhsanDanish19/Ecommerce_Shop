@@ -260,3 +260,24 @@ def remove_cart_item(request, id):
         return Response({
             "error": "Cart item not found"
         }, status=404)
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_cart(request):
+
+    items = request.data.get("items", [])
+
+    for item in items:
+
+        cart = Cart.objects.get(
+            id=item["id"],
+            user=request.user
+        )
+
+        cart.quantity = item["quantity"]
+        cart.save()
+
+    return Response({
+        "message": "Cart Updated Successfully"
+    })
