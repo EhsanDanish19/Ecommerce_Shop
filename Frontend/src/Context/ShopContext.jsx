@@ -13,6 +13,7 @@ const ShopContextProvider = ({ children }) => {
 
     const [all_product, setAll_product] = useState([])
     const [cartData, setCartData] = useState([])
+    const [pendingCart, setPendingCart] = useState([])
 
     // ==============================
     // FETCH PRODUCTS
@@ -53,6 +54,7 @@ const ShopContextProvider = ({ children }) => {
             )
 
             setCartData(res.data)
+            setPendingCart(res.data)
 
         } catch (error) {
             console.log(error)
@@ -62,53 +64,37 @@ const ShopContextProvider = ({ children }) => {
     // ==============================
     // INCREASE QUANTITY
     // ==============================
-    const increaseQty = async (id) => {
+    const increaseQty = (id) => {
 
-        const token = localStorage.getItem("token")
-
-        try {
-
-            await axios.post(
-                `${BASE_URL}/api/cart/increase/${id}/`,
-                {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
+        setPendingCart(prev =>
+            prev.map(item =>
+                item.id === id
+                    ? {
+                        ...item,
+                        quantity: item.quantity + 1,
+                        subtotal: (item.quantity + 1) * item.price
                     }
-                }
+                    : item
             )
-
-            fetchCart()
-
-        } catch (error) {
-            console.log(error)
-        }
+        )
     }
 
     // ==============================
     // DECREASE QUANTITY
     // ==============================
-    const decreaseQty = async (id) => {
+    const decreaseQty = (id) => {
 
-        const token = localStorage.getItem("token")
-
-        try {
-
-            await axios.post(
-                `${BASE_URL}/api/cart/decrease/${id}/`,
-                {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
+        setPendingCart(prev =>
+            prev.map(item =>
+                item.id === id && item.quantity > 1
+                    ? {
+                        ...item,
+                        quantity: item.quantity - 1,
+                        subtotal: (item.quantity - 1) * item.price
                     }
-                }
+                    : item
             )
-
-            fetchCart()
-
-        } catch (error) {
-            console.log(error)
-        }
+        )
     }
 
     // ==============================
@@ -175,19 +161,49 @@ const ShopContextProvider = ({ children }) => {
     }, [])
 
 
-    
+
+    const updateCart = async () => {
+
+        const token = localStorage.getItem("token")
+
+        try {
+
+            await axios.post(
+                `${BASE_URL}/api/cart/update/`,
+                {
+                    items: pendingCart
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
+
+            setCartData(pendingCart)
+
+            alert("Cart Updated Successfully")
+
+        } catch (error) {
+
+            console.log(error)
+
+        }
+    }
+
     // ==============================
     // CONTEXT VALUE
     // ==============================
     const contextValue = {
 
         all_product,
-        cartData,
-
-        fetchCart,
+        cartData: pendingCart,
 
         increaseQty,
         decreaseQty,
+
+        updateCart,
+
         removeItem,
 
         getTotalAmount,

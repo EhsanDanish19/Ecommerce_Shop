@@ -15,10 +15,12 @@ const CartItems = () => {
     const {
 
         cartData,
-
+        
         increaseQty,
         decreaseQty,
         removeItem,
+        
+        updateCart,
 
         getTotalAmount
 
@@ -153,7 +155,7 @@ const CartItems = () => {
 
                     <Link to={'/'}>
 
-                        <button>
+                        <button className='cursor-pointer'>
 
                             Continue Shopping
 
@@ -164,7 +166,7 @@ const CartItems = () => {
 
                 <div className='px-5 py-3 mb-3 text-center border border-gray-400 rounded-full'>
 
-                    <button>
+                    <button onClick={updateCart} className='cursor-pointer'>
                         <span>Update Shopping Carts</span>
                     </button>
 
