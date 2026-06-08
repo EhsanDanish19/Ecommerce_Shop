@@ -13,19 +13,7 @@ urlpatterns = [
     path('products/<str:category>/', product_by_category),
     path('add_to_cart/', add_to_cart),
     path('cart/', get_cart),
-# INCREASE
-    path(
-        'cart/increase/<int:id>/',
-        increase_quantity,
-        name='increase_quantity'
-    ),
 
-    # DECREASE
-    path(
-        'cart/decrease/<int:id>/',
-        decrease_quantity,
-        name='decrease_quantity'
-    ),
 
     # REMOVE
     path(
