@@ -13,6 +13,7 @@ import kid_banner from "./assets/kid-banner1.jfif"
 import NewCollection from "./Components/NewCollection/NewCollection"
 import Popular from "./Components/Popular/Popular"
 import AutoLogout from "./Components/AutoLogout"
+import Checkout from "./Pages/CheckOut"
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
     <Route path="/new_collection" element={<NewCollection/>} />
     <Route path="/popular" element={<Popular/>} />
     <Route path="/cart" element={<Carts/>} />
+    <Route path="/checkout" element={<Checkout />} />
     <Route path="/login" element={<Login/>} />
     <Route path="/register" element={<Register/>} />
 

@@ -219,7 +219,7 @@ const CartItems = () => {
 
                     </div>
 
-                    <button className='bg-red-500 text-white px-6 py-3 mt-5 rounded-lg hover:bg-red-400'>
+                    <button onClick={() => navigate("/checkout")} className='bg-red-500 text-white px-6 py-3 mt-5 rounded-lg hover:bg-red-400'>
 
                         PROCEED TO CHECKOUT
 
