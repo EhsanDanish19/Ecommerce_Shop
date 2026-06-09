@@ -38,3 +38,37 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model =Cart
         fields = '__all__'
+
+        from rest_framework import serializers
+
+class OrderItemSerializer(serializers.ModelSerializer):
+
+    product_name = serializers.CharField(
+        source='product.name',
+        read_only=True
+    )
+
+    class Meta:
+        model = OrderItem
+        fields = '__all__'
+
+
+
+class OrderSerializer(serializers.ModelSerializer):
+
+    items = OrderItemSerializer(
+        many=True,
+        read_only=True
+    )
+
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+
+class CheckoutSerializer(serializers.Serializer):
+
+    full_name = serializers.CharField()
+    phone = serializers.CharField()
+    address = serializers.CharField()
+    payment_method = serializers.CharField()

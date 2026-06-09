@@ -38,7 +38,6 @@ def login_view(request):
     user = authenticate(username=username, password=password)
 
     if user is not None:
-        print("username", user.username)
 
         refresh = RefreshToken.for_user(user)
         data={
@@ -47,7 +46,7 @@ def login_view(request):
             "refresh": str(refresh),
             "username":user.username
             }
-        print(data)
+
         return Response(data)
     
     return Response({"error": "Invalid Username or Password"}, status=400)
@@ -261,6 +260,9 @@ def remove_cart_item(request, id):
             "error": "Cart item not found"
         }, status=404)
     
+# ==============================
+# Update carts ITEM
+# ==============================
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -281,3 +283,64 @@ def update_cart(request):
     return Response({
         "message": "Cart Updated Successfully"
     })
+
+
+
+from rest_framework.views import APIView
+from django.db import transaction
+
+class CheckoutAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    @transaction.atomic
+    def post(self, request):
+
+        serializer = CheckoutSerializer(
+            data=request.data
+        )
+
+        serializer.is_valid(
+            raise_exception=True
+        )
+
+        cart_items = Cart.objects.filter(
+            user=request.user
+        )
+
+        if not cart_items.exists():
+            return Response({
+                "error": "Cart is empty"
+            }, status=400)
+
+        total_amount = sum(
+            item.product.new_price * item.quantity
+            for item in cart_items
+        )
+
+        order = Order.objects.create(
+            user=request.user,
+            full_name=serializer.validated_data['full_name'],
+            phone=serializer.validated_data['phone'],
+            address=serializer.validated_data['address'],
+            payment_method=serializer.validated_data['payment_method'],
+            total_amount=total_amount
+        )
+
+        for item in cart_items:
+
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                size=item.size,
+                quantity=item.quantity,
+                price=item.product.new_price,
+                subtotal=item.product.new_price * item.quantity
+            )
+
+        cart_items.delete()
+
+        return Response({
+            "message": "Order placed successfully",
+            "order_id": order.id
+        })

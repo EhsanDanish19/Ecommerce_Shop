@@ -28,5 +28,10 @@ urlpatterns = [
         name='update_cart'
     ),    
     
+    path(
+        'checkout/',
+        CheckoutAPIView.as_view(),
+        name='checkout'
+    ),
 
 ]
