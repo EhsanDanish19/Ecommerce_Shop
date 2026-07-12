@@ -16,22 +16,15 @@ urlpatterns = [
 
 
     # REMOVE
-    path(
-        'cart/remove/<int:id>/',
-        remove_cart_item,
-        name='remove_cart_item'
+    path('cart/remove/<int:id>/', remove_cart_item, name='remove_cart_item'
     ), 
 
-    path(
-        'cart/update/',
-        update_cart,
-        name='update_cart'
+    path('cart/update/', update_cart, name='update_cart'
     ),    
     
-    path(
-        'checkout/',
-        CheckoutAPIView.as_view(),
-        name='checkout'
+    path('checkout/', CheckoutAPIView.as_view(), name='checkout'
     ),
+
+    path('my_orders/', user_orders, name='my_orders'),
 
 ]

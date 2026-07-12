@@ -1,4 +1,6 @@
 
+from pickle import GET
+
 from django.contrib.auth import authenticate
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -344,3 +346,18 @@ class CheckoutAPIView(APIView):
             "message": "Order placed successfully",
             "order_id": order.id
         })
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def user_orders(request):
+
+    orders = Order.objects.filter(
+        user = request.user
+    ).order_by("-created_at")
+
+    serializer = OrderSerializer(
+        orders,
+        many=True
+    )
+
+    return Response(serializer.data)
