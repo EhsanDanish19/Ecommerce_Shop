@@ -26,8 +26,7 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem('token')
         localStorage.removeItem('username')
-        console.log("Navbar Token:", token)
-        console.log("Navbar Username:", username)
+
         alert("Logout Successfully")
         navigate('/login')
     }
@@ -44,7 +43,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Desktop Menu */}
-                <ul className="hidden md:flex gap-6 text-gray-600 ">
+                <ul className="hidden lg:flex gap-6 text-gray-600 ">
                     <Link to="/"><li
                         className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "home" ? "bg-gray-100 text-black" : ""}`}
                         onClick={() => setMenu("home")}
@@ -73,14 +72,22 @@ const Navbar = () => {
                             Kids
                         </li>
                     </Link>
+                    <Link to="/my_orders">
+                        <li
+                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "my_orders" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("my_orders")}
+                        >
+                            Orders
+                        </li>
+                    </Link>
                 </ul>
 
                 {/* Right */}
                 <div className="flex items-center gap-4">
+
                     <h1 className='font-semibold text-center'>
                         Welcome {username}
                     </h1>
-                    <div className='hidden md:flex'>
+                    <div className='hidden lg:flex'>
                         {
                             token ? (
                                 <div className='flex gap-4 items-center'>
@@ -110,7 +117,7 @@ const Navbar = () => {
                     </div>
 
                     {/* Hamburger */}
-                    <div className="md:hidden " onClick={() => setOpen(!open)}>
+                    <div className="lg:hidden " onClick={() => setOpen(!open)}>
                         <i className="bi bi-list cursor-pointer text-4xl"></i>
                     </div>
                 </div>
@@ -119,7 +126,7 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             {open && (
-                <ul className="flex flex-col gap-3 mt-4 md:hidden text-gray-600">
+                <ul className="flex flex-col gap-3 mt-4 lg:hidden text-gray-600">
                     <Link to="/">
                         <li
                             className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "home" ? "bg-gray-100 text-black" : ""}`}
@@ -146,6 +153,13 @@ const Navbar = () => {
                         <li className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "kids" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("kids")}
                         >
                             Kids
+                        </li>
+                    </Link>
+                    <Link to="/my_orders">
+                        <li
+                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "my_orders" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("my_orders")}
+                        >
+                            Orders
                         </li>
                     </Link>
                     {
