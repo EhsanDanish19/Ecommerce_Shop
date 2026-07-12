@@ -106,14 +106,14 @@ const ProductDisplay = (props) => {
         <div>
           <h1 className='text-xl font-bold text-gray-700 py-1 mb-2'>Select Size</h1>
           <div className='flex gap-3'>
-            {product.sizes?.[0]?.split(",").map((size, index) => (
+            {product.sizes?.map((size, index) => (
               <div
                 key={index}
-                onClick={() => setSelectedSize(size.trim())}
+                onClick={() => setSelectedSize(size)}
                 className={`border cursor-pointer w-10 h-10 flex items-center justify-center
     ${selectedSize === size.trim() ? 'bg-orange-600 text-white' : ''}`}
               >
-                {size.trim()}
+                {size}
               </div>
             ))}
           </div>
