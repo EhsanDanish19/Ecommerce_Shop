@@ -14,6 +14,7 @@ import NewCollection from "./Components/NewCollection/NewCollection"
 import Popular from "./Components/Popular/Popular"
 import AutoLogout from "./Components/AutoLogout"
 import Checkout from "./Pages/CheckOut"
+import My_Orders from "./Pages/My_Orders"
 
 
 function App() {
@@ -37,8 +38,11 @@ function App() {
     <Route path="/checkout" element={<Checkout />} />
     <Route path="/login" element={<Login/>} />
     <Route path="/register" element={<Register/>} />
+    <Route path="/my_orders" element={<My_Orders/>} />
 
     </Routes>
+    
+      
     <Footer/>
     </BrowserRouter>
     </div>
