@@ -37,20 +37,22 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+class ProductSizeStock(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="size_stock")
 
+    size = models.ForeignKey(Size, on_delete=models.CASCADE)
+
+    stock = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.size.name} - {self.stock}"
+    
 class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE
-    )
-
-    size = models.CharField(max_length=20)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE)
 
     quantity = models.PositiveIntegerField(default=1)
 

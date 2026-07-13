@@ -1,6 +1,4 @@
 
-from pickle import GET
-
 from django.contrib.auth import authenticate
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -120,31 +118,88 @@ def product_by_category(request, category):
 def add_to_cart(request):
 
     product_id = request.data.get('product')
-    size = request.data.get('size')
+    size_name = request.data.get('size')
     quantity = request.data.get('quantity', 1)
     user_id = request.data.get('user')
 
-    product = Product.objects.get(id=product_id)
+    # -----------------------
+    # Product Check
+    # -----------------------
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        return Response(
+            {"error": "Product not found"},
+            status=404
+        )    
+
+    # -----------------------
+    # Size Check
+    # -----------------------
+    try:
+        size_obj = Size.objects.get(name=size_name)
+    except Size.DoesNotExist:
+        return Response(
+            {"error": "Invalid size"},
+            status=400
+        )
+    
+    #--------------------
+    #Stock Check
+    #--------------------
+
+    try:
+        size_stock = ProductSizeStock.objects.get(
+            product = product,
+            size = size_obj
+        )
+    except ProductSizeStock.DoesNotExist:
+        return Response(
+            {
+                "error": "This size is not available"
+            },
+            status=400
+        )
+    
+    if size_stock.stock < quantity:
+        return Response(
+            {
+                "error":f"Only {size_stock.stock} items availabe"
+            },
+            status=400
+        )
     
     user = request.user
-
-
+    
     cart_item, created = Cart.objects.get_or_create(
         user=user,
         product=product,
-        size=size
+        size=size_obj
     )
 
     if not created:
-        cart_item.quantity += quantity
+        new_quantity = cart_item.quantity + quantity
+        
+        if new_quantity > size_stock.stock:
+            return Response(
+                {
+                    "error":"You cannot add more than availabe stock"
+                },
+                status=400
+            )
+        
+        cart_item.quantity = new_quantity
+        
     else:
         cart_item.quantity = quantity
 
     cart_item.save()
 
     return Response({
-        "message": "Added to cart"
-    })
+        "message": "Product added to cart successfully."
+    },
+    status=200
+    )
 
 # ==============================
 # Get Carts
@@ -159,14 +214,20 @@ def get_cart(request):
     data = []
 
     for item in cart_items:
+        stock = ProductSizeStock.objects.filter(
+            product=item.product,
+            size=item.size
+        ).first()
+
         data.append({
             "id": item.id,
             "product_id": item.product.id,
             "name": item.product.name,
             "image": item.product.image.url,
             "price": item.product.new_price,
-            "size": item.size,
+            "size": item.size.name,
             "quantity": item.quantity,
+            "available_stock": stock.stock if stock else 0,
             "subtotal": item.product.new_price * item.quantity
         })
 
@@ -182,23 +243,46 @@ def increase_quantity(request, id):
 
     try:
 
-        cart_item = Cart.objects.get(
+        cart_item = Cart.objects.select_related(
+            "product",
+            "size"
+        ).get(
             id=id,
             user=request.user
         )
+    except Cart.DoesNotExist:
+        return Response(
+            {"error": "Cart item not found"},
+            status=404
+        )
+    
+    try:
+        stock = ProductSizeStock.objects.get(
+            product = cart_item.product,
+            size = cart_item.size
+        )
 
-        cart_item.quantity += 1
-        cart_item.save()
+       
+    except ProductSizeStock.DoesNotExist:
+        return Response(
+            {"error": "Stock record not found"},
+            status=404
+        )
+    
+    if cart_item.quantity >= stock.stock:
+        return Response(
+                {
+                    "error": "Stock not available"
+                },
+                status=400
+            )
 
-        return Response({
+    cart_item.quantity += 1
+    cart_item.save()
+
+    return Response({
             "message": "Quantity Increased"
         })
-
-    except Cart.DoesNotExist:
-
-        return Response({
-            "error": "Cart item not found"
-        }, status=404)
 
 
 # ==============================
@@ -209,32 +293,37 @@ def increase_quantity(request, id):
 def decrease_quantity(request, id):
 
     try:
-
         cart_item = Cart.objects.get(
             id=id,
             user=request.user
         )
-
-        # if quantity 1 then delete
-        if cart_item.quantity > 1:
-
-            cart_item.quantity -= 1
-            cart_item.save()
-
-        else:
-
-            cart_item.delete()
-
-        return Response({
-            "message": "Quantity Decreased"
-        })
-
+        
     except Cart.DoesNotExist:
+        return Response(
+            {
+                "error": "Cart item not found"
+            },
+            status=404
+        )
 
-        return Response({
-            "error": "Cart item not found"
-        }, status=404)
+    # Quantity 1 se kam nahi hone deni
+    if cart_item.quantity <= 1:
+        return Response(
+            {
+                "error": "Quantity cannot be less than 1"
+            },
+            status=400
+        )
 
+    cart_item.quantity -= 1
+    cart_item.save()
+
+    return Response(
+        {
+            "message": "Quantity decreased successfully"
+        },
+        status=200
+    )
 
 # ==============================
 # REMOVE ITEM
@@ -273,14 +362,35 @@ def update_cart(request):
     items = request.data.get("items", [])
 
     for item in items:
+        try:
+            cart_item = Cart.objects.get(
+                id=item["id"],
+                user=request.user
+            )
 
-        cart = Cart.objects.get(
-            id=item["id"],
-            user=request.user
+        except Cart.DoesNotExist:
+            return Response(
+                {
+                    "error":"Cart item not found"
+                },
+                status=404
+            )
+
+        stock = ProductSizeStock.objects.get(
+            product=cart_item.product,
+            size=cart_item.size
         )
-
-        cart.quantity = item["quantity"]
-        cart.save()
+        
+        if item["quantity"] > stock.stock:
+            return Response(
+                {
+                    "error": f"{cart_item.product.name} stock available only {stock.stock}"
+                },
+                status=400
+            )
+        
+        cart_item.quantity = item["quantity"]
+        cart_item.save()
 
     return Response({
         "message": "Cart Updated Successfully"
