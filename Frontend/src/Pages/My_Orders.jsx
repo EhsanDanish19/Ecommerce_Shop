@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { BASE_URL } from '../api';
 import { Link, useNavigate } from 'react-router-dom'
-
+import OrderTracking from '../Components/OrderTracking';
 
 const My_Orders = () => {
 
@@ -73,7 +73,6 @@ const My_Orders = () => {
                         <div>Price</div>
                         <div>Total</div>
                         <div>Date</div>
-                        <div>Payment</div>
                         <div>Status</div>
 
 
@@ -86,35 +85,13 @@ const My_Orders = () => {
 
                                 <div
                                     key={`${order.id}-${index}`}
-                                    className="grid grid-cols-1 md:grid-cols-9 md:mx-5 lg:mx-20 py-4 text-center border border-t-0 border-gray-300"
+                                    className="grid grid-cols-1 md:grid-cols-9 justify-between md:mx-5 lg:mx-20 py-4 text-center border border-t-0 border-gray-300"
                                 >
 
                                     <div>
                                         <span className="md:hidden font-bold">Id: </span>
                                         {order.id}
                                     </div>
-
-                                    <div>
-                                        <span className="md:hidden font-bold">Payment: </span>
-                                        {order.payment_method}
-                                    </div>
-
-                                    <div>
-                                        <span className="md:hidden font-bold">Status: </span>
-                                        {order.status}
-                                    </div>
-
-                                    <div>
-                                        <span className="md:hidden font-bold">Date: </span>
-                                        {new Date(order.created_at).toLocaleString([], {
-                                            year: "numeric",
-                                            month: "short",
-                                            day: "numeric",
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                        })}
-                                    </div>
-
                                     <div>
                                         <span className="md:hidden font-bold">Product: </span>
                                         {item.name}
@@ -130,6 +107,7 @@ const My_Orders = () => {
                                         {item.quantity}
                                     </div>
 
+
                                     <div>
                                         <span className="md:hidden font-bold">Price: </span>
                                         Rs {item.price}
@@ -139,6 +117,27 @@ const My_Orders = () => {
                                         <span className="md:hidden font-bold">Total: </span>
                                         Rs {order.total_amount}
                                     </div>
+
+                                    <div>
+                                        <span className="md:hidden font-bold">Date: </span>
+                                        {new Date(order.created_at).toLocaleString([], {
+                                            year: "numeric",
+                                            month: "short",
+                                            day: "numeric",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        })}
+                                    </div>
+
+
+
+                                    <div className="flex justify-center">
+                                        <OrderTracking status={order.status} />
+                                    </div>
+
+
+
+
 
                                 </div>
 
