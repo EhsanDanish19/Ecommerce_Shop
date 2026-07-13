@@ -3,7 +3,7 @@ import star_icon from '../assets/star_icon.png'
 import star_half_icon from '../assets/star_half_icon.png'
 import { ShopContext } from '../Context/ShopContext';
 import { BASE_URL } from '../api';
-import { data, useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -14,59 +14,57 @@ const ProductDisplay = (props) => {
   const { product } = props;
   const [selectedSize, setSelectedSize] = useState(null)
 
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   const handleAddToCart = async () => {
 
     const token = localStorage.getItem("token");
 
-    if (!token){
+    if (!token) {
       localStorage.setItem("redirectAfterLogin", window.location.pathname);
       navigate("/login");
       return;
     }
 
-    if (!selectedSize){
+    if (!selectedSize) {
       alert("Please select size")
       return;
     }
 
-    try{
+    try {
 
       await axios.post(
         `${BASE_URL}/api/add_to_cart/`,
         {
           product: product.id,
-          size:selectedSize,
-          quantity:1
+          size: selectedSize,
+          quantity: 1
         },
         {
-          headers:{
-            Authorization:`Bearer ${token}`
+          headers: {
+            Authorization: `Bearer ${token}`
           }
         }
       );
-      alert("Product added to cart")
 
-    } catch(error){
-      console.log(error);
-      if (error.response?.status === 401){
-        navigate("/login")
+      alert("Product added to cart")
+      window.location.reload();
+    } catch (error) {
+      console.log("ERROR:", error.response?.data);
+
+      if (error.response?.status === 401) {
+        navigate("/login");
+      }
+      else {
+        alert(
+          error.response?.data?.error ||
+          "Something went wrong"
+        );
       }
     }
-    
-  }
-  //   const {productId} =useParams();
-  //   const [products, setProducts] = useState([]);
 
-  // useEffect(() => {
-  //   fetch(`${BASE_URL}/api/product/${productId}`)
-  //   .then(res => res.json())
-  //   .then(data => {
-  //     setProducts(data);
-  //   })
-  //   .catch(err =>console.error(err));
-  // }, [])
+  }
+  
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 p-10 md:mx-5 lg:mx-30 mb-5'>
@@ -109,15 +107,17 @@ const ProductDisplay = (props) => {
             {product.sizes?.map((size, index) => (
               <div
                 key={index}
-                onClick={() => setSelectedSize(size)}
+                onClick={() => setSelectedSize(String(size).trim())}
                 className={`border cursor-pointer w-10 h-10 flex items-center justify-center
-    ${selectedSize === size.trim() ? 'bg-orange-600 text-white' : ''}`}
+    ${selectedSize === String(size).trim() ? 'bg-orange-600 text-white' : ''}`}
               >
                 {size}
               </div>
             ))}
           </div>
-          <button onClick={handleAddToCart} className='bg-orange-600 w-full lg:w-[400px] p-2 text-white font-semibold text-xl hover:bg-orange-500 cursor-pointer my-2 outline-none'>ADD TO CART</button>
+          <button onClick={handleAddToCart} className='bg-orange-600 w-full lg:w-[400px] p-2 text-white font-semibold text-xl hover:bg-orange-500 cursor-pointer my-2 outline-none'>
+            ADD TO CART
+          </button>
         </div>
         <div>
           <span>Category: <span>{product.category}, {product.name} , Crop Top</span></span>

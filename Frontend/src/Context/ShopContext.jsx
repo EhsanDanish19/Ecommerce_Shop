@@ -53,8 +53,8 @@ const ShopContextProvider = ({ children }) => {
                 }
             )
 
-            setCartData(res.data)
-            setPendingCart(res.data)
+            setCartData([...res.data])
+            setPendingCart([...res.data])
 
         } catch (error) {
             console.log(error)
@@ -67,16 +67,29 @@ const ShopContextProvider = ({ children }) => {
     const increaseQty = (id) => {
 
         setPendingCart(prev =>
-            prev.map(item =>
-                item.id === id
-                    ? {
+            prev.map(item => {
+
+                if (item.id === id) {
+
+                    if (item.quantity >= item.available_stock) {
+                        alert(
+                            `Only ${item.available_stock} items available`
+                        )
+                        return item
+                    }
+
+
+                    return {
                         ...item,
                         quantity: item.quantity + 1,
                         subtotal: (item.quantity + 1) * item.price
                     }
-                    : item
-            )
+                }
+
+                return item
+            })
         )
+
     }
 
     // ==============================
@@ -85,16 +98,23 @@ const ShopContextProvider = ({ children }) => {
     const decreaseQty = (id) => {
 
         setPendingCart(prev =>
-            prev.map(item =>
-                item.id === id && item.quantity > 1
-                    ? {
+            prev.map(item => {
+
+                if (item.id === id && item.quantity > 1) {
+
+                    return {
                         ...item,
                         quantity: item.quantity - 1,
                         subtotal: (item.quantity - 1) * item.price
                     }
-                    : item
-            )
+
+                }
+
+                return item
+
+            })
         )
+
     }
 
     // ==============================
@@ -180,17 +200,23 @@ const ShopContextProvider = ({ children }) => {
                 }
             )
 
-            setCartData(pendingCart)
+
+            await fetchCart()
 
             alert("Cart Updated Successfully")
 
-        } catch (error) {
-
-            console.log(error)
 
         }
-    }
+        catch (error) {
 
+            alert(
+                error.response?.data?.error ||
+                "Cart update failed"
+            )
+
+        }
+
+    }
     // ==============================
     // CONTEXT VALUE
     // ==============================
