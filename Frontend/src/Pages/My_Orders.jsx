@@ -65,25 +65,85 @@ const My_Orders = () => {
                         My Orders
                     </h1>
 
-                    <div className='hidden md:grid grid-cols-5 md:mx-5 lg:mx-20 py-5 text-center font-bold border border-gray-300'>
+                    <div className='hidden md:grid grid-cols-9 md:mx-5 lg:mx-20 py-5 text-center font-bold border border-gray-300'>
                         <div>Id</div>
+                        <div>Product</div>
+                        <div>Size</div>
+                        <div>Qty</div>
+                        <div>Price</div>
                         <div>Total</div>
+                        <div>Date</div>
                         <div>Payment</div>
                         <div>Status</div>
-                        <div>Date</div>
+
+
                     </div>
 
                     {
-                        orders.map(order => (
-                            <div key={order.id} className='grid grid-cols-1 md:grid-cols-5 mx-5 md:mx-5 lg:mx-20 py-5 mb-4 md:mb-0 md:pl-0 pl-10 md:text-center border md:border-t-0 border-gray-300'>
+                        orders.map((order) => (
 
-                                <h2><span className='md:hidden font-bold'>Id : </span>{order.id}</h2>
-                                <p><span className='md:hidden font-bold'>Total Amount : </span> {order.total_amount}</p>
-                                <p><span className='md:hidden font-bold'>payment Method  : </span> {order.payment_method}</p>
-                                <p><span className='md:hidden font-bold'>Status : </span> {order.status} </p>
-                                <p><span className='md:hidden font-bold'>Date : </span> {order.created_at} </p>
+                            order.items.map((item, index) => (
 
-                            </div>
+                                <div
+                                    key={`${order.id}-${index}`}
+                                    className="grid grid-cols-1 md:grid-cols-9 md:mx-5 lg:mx-20 py-4 text-center border border-t-0 border-gray-300"
+                                >
+
+                                    <div>
+                                        <span className="md:hidden font-bold">Id: </span>
+                                        {order.id}
+                                    </div>
+
+                                    <div>
+                                        <span className="md:hidden font-bold">Payment: </span>
+                                        {order.payment_method}
+                                    </div>
+
+                                    <div>
+                                        <span className="md:hidden font-bold">Status: </span>
+                                        {order.status}
+                                    </div>
+
+                                    <div>
+                                        <span className="md:hidden font-bold">Date: </span>
+                                        {new Date(order.created_at).toLocaleString([], {
+                                            year: "numeric",
+                                            month: "short",
+                                            day: "numeric",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        })}
+                                    </div>
+
+                                    <div>
+                                        <span className="md:hidden font-bold">Product: </span>
+                                        {item.name}
+                                    </div>
+
+                                    <div>
+                                        <span className="md:hidden font-bold">Size: </span>
+                                        {item.size}
+                                    </div>
+
+                                    <div>
+                                        <span className="md:hidden font-bold">Qty: </span>
+                                        {item.quantity}
+                                    </div>
+
+                                    <div>
+                                        <span className="md:hidden font-bold">Price: </span>
+                                        Rs {item.price}
+                                    </div>
+
+                                    <div>
+                                        <span className="md:hidden font-bold">Total: </span>
+                                        Rs {order.total_amount}
+                                    </div>
+
+                                </div>
+
+                            ))
+
                         ))
                     }
                 </div>
