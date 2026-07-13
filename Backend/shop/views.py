@@ -418,6 +418,9 @@ class CheckoutAPIView(APIView):
 
         cart_items = Cart.objects.filter(
             user=request.user
+        ).select_related(
+            "product",
+            "size"
         )
 
         if not cart_items.exists():
@@ -425,10 +428,41 @@ class CheckoutAPIView(APIView):
                 "error": "Cart is empty"
             }, status=400)
 
+
+        # ==========================
+        # STOCK CHECK
+        # ==========================
+
+        for item in cart_items:
+
+
+            stock = ProductSizeStock.objects.get(
+                product=item.product,
+                size=item.size
+            )
+
+
+            if item.quantity > stock.stock:
+
+                return Response(
+                    {
+                        "error":
+                        f"{item.product.name} ({item.size.name}) only {stock.stock} available"
+                    },
+                    status=400
+                )
+            
+        # ==========================
+        # TOTAL PRICE
+        # ==========================
         total_amount = sum(
             item.product.new_price * item.quantity
             for item in cart_items
         )
+
+        # ==========================
+        # CREATE ORDER
+        # ==========================
 
         order = Order.objects.create(
             user=request.user,
@@ -439,6 +473,9 @@ class CheckoutAPIView(APIView):
             total_amount=total_amount
         )
 
+        # ==========================
+        # ORDER ITEMS
+        # ==========================
         for item in cart_items:
 
             OrderItem.objects.create(
@@ -450,12 +487,29 @@ class CheckoutAPIView(APIView):
                 subtotal=item.product.new_price * item.quantity
             )
 
+           # Reduce Stock
+
+            stock = ProductSizeStock.objects.get(
+
+                product=item.product,
+
+                size=item.size
+
+            )
+
+
+            stock.stock -= item.quantity
+
+            stock.save()
+
         cart_items.delete()
 
         return Response({
             "message": "Order placed successfully",
             "order_id": order.id
-        })
+        },
+        status=201
+        )
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
@@ -464,7 +518,7 @@ def user_orders(request):
     orders = Order.objects.filter(
         user = request.user
     ).order_by("-created_at")
-
+    
     serializer = OrderSerializer(
         orders,
         many=True

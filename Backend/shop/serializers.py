@@ -40,14 +40,22 @@ class CartSerializer(serializers.ModelSerializer):
 
 class OrderItemSerializer(serializers.ModelSerializer):
 
-    product_name = serializers.CharField(
+    name = serializers.CharField(
         source='product.name',
         read_only=True
     )
 
+    size = serializers.CharField(
+        source="size.name"
+    )
     class Meta:
         model = OrderItem
-        fields = '__all__'
+        fields = [
+            "name",
+            "size",
+            "quantity",
+            "price",
+            "subtotal"]
 
 
 
@@ -60,7 +68,14 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = [
+            "id",
+            "total_amount",
+            "payment_method",
+            "status",
+            "created_at",
+            "items"
+        ]
 
 
 class CheckoutSerializer(serializers.Serializer):
