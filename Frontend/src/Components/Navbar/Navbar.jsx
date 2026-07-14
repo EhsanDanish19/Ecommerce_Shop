@@ -3,13 +3,17 @@ import logo from "../../assets/logo.png"
 import cartIcon from "../../assets/cart-icon.png"
 import './Navbar.css'
 import "bootstrap-icons/font/bootstrap-icons.css"
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate,useLocation } from 'react-router-dom'
 import { ShopContext } from '../../Context/ShopContext'
 
 const Navbar = () => {
 
     const navigate = useNavigate()
     const token = localStorage.getItem('token')
+
+    const [profileOpen, setProfileOpen] = useState(false)
+
+    const location = useLocation();
 
     const [username, setUsername] = useState(
         localStorage.getItem('username')
@@ -72,42 +76,81 @@ const Navbar = () => {
                             Kids
                         </li>
                     </Link>
-                    <Link to="/my_orders">
-                        <li
-                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "my_orders" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("my_orders")}
-                        >
-                            Orders
-                        </li>
-                    </Link>
+                    
                 </ul>
 
                 {/* Right */}
                 <div className="flex items-center gap-4">
 
-                    <h1 className='font-semibold text-center'>
-                        Welcome {username}
-                    </h1>
+                    {
+                        token ? (
+                            <h1 className="font-semibold text-center">
+                                Welcome, {username} 👋
+                            </h1>
+                        ) : (
+                            <h1 className="font-semibold text-center">
+                                Welcome, Guest 😊
+                            </h1>
+                        )
+                    }
+
                     <div className='hidden lg:flex'>
                         {
-                            token ? (
-                                <div className='flex gap-4 items-center'>
+                            token ?
+                                (
+                                    token && location.pathname !== "/profile" && location.pathname !== "/my_orders" ? (
 
+                                    
 
+                                    <div className="relative">
 
-                                    <button
-                                        onClick={handleLogout}
-                                        className=" w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer"                                >
-                                        Logout
-                                    </button>
+                                        {/* Profile Icon */}
+                                        <button
+                                            onClick={() => setProfileOpen(!profileOpen)}
+                                            className="text-3xl cursor-pointer">
+                                            <i className="bi bi-person-circle"></i>
+                                        </button>
 
-                                </div>
-                            ) : (
-                                <Link to="/login">
-                                    <button className="nav-login w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer">
-                                        Login
-                                    </button>
-                                </Link>
-                            )}
+                                        {/* Dropdown */}
+                                        {
+                                            profileOpen && (
+                                                <div className="absolute right-0 mt-3 w-40 bg-white shadow-lg rounded-lg p-3 z-50">
+
+                                                    <Link to="/profile">
+                                                        <button className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded">
+                                                            Profile
+                                                        </button>
+                                                    </Link>
+
+                                                    <Link to="/my_orders">
+                                                        <button className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded">
+                                                            Orders
+                                                        </button>
+                                                    </Link>
+
+                                                    <button
+                                                        onClick={handleLogout}
+                                                        className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-red-500">
+                                                        Logout
+                                                    </button>
+
+                                                </div>
+                                            )
+                                        }
+
+                                    </div>
+
+                                ) : (
+
+                                    <Link to="/login">
+                                        <button className="nav-login w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm">
+                                            Login
+                                        </button>
+                                    </Link>
+
+                                )
+                                ):null
+                        }
                     </div>
                     <div className="relative">
                         <Link to="/cart"><img src={cartIcon} alt="" className=" nav-cart w-8" /></Link>
@@ -164,22 +207,51 @@ const Navbar = () => {
                     </Link>
                     {
                         token ? (
-                            <div className='flex gap-4 items-center'>
+                            <div className="relative">
 
+                                {/* Profile Icon */}
                                 <button
-                                    onClick={handleLogout}
-                                    className=" w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer"                                >
-                                    Logout
+                                    onClick={() => setProfileOpen(!profileOpen)}
+                                    className="text-3xl cursor-pointer"
+                                >
+                                    <i className="bi bi-person-circle"></i>
                                 </button>
 
+
+                                {/* Dropdown */}
+                                {
+                                    profileOpen && (
+                                        <div className="absolute right-0 mt-3 w-40 bg-white shadow-lg rounded-lg p-3 z-50">
+
+                                            <Link to="/profile">
+                                                <button className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded">
+                                                    Profile
+                                                </button>
+                                            </Link>
+
+                                            <button
+                                                onClick={handleLogout}
+                                                className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-red-500"
+                                            >
+                                                Logout
+                                            </button>
+
+                                        </div>
+                                    )
+                                }
+
                             </div>
+
                         ) : (
+
                             <Link to="/login">
-                                <button className="nav-login w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm cursor-pointer">
+                                <button className="nav-login w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm">
                                     Login
                                 </button>
                             </Link>
-                        )}
+
+                        )
+                    }
 
 
                 </ul>

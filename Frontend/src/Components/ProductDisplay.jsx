@@ -6,7 +6,7 @@ import { BASE_URL } from '../api';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
+import defaultProduct from '../assets/defaultProduct.avif'
 
 const ProductDisplay = (props) => {
 
@@ -110,8 +110,8 @@ const ProductDisplay = (props) => {
 
         </div>
         <div>
-          <img className=' ml-5 h-100 object-contain' src={mainImage}
-            alt=""
+          <img className=' ml-5 h-100 w-80 object-contain' src={mainImage || defaultProduct}
+            alt="Product"
           />
         </div>
       </div>
