@@ -15,6 +15,7 @@ import Popular from "./Components/Popular/Popular"
 import AutoLogout from "./Components/AutoLogout"
 import Checkout from "./Pages/CheckOut"
 import My_Orders from "./Pages/My_Orders"
+import User_Profile from "./Pages/User_Profile"
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
     <Route path="/login" element={<Login/>} />
     <Route path="/register" element={<Register/>} />
     <Route path="/my_orders" element={<My_Orders/>} />
+    <Route path="/profile" element={<User_Profile/>} />
 
     </Routes>
     

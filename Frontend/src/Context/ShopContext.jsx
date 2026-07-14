@@ -10,11 +10,12 @@ import { BASE_URL } from "../api"
 export const ShopContext = createContext(null)
 
 const ShopContextProvider = ({ children }) => {
-
+    
     const [all_product, setAll_product] = useState([])
     const [cartData, setCartData] = useState([])
     const [pendingCart, setPendingCart] = useState([])
-
+    const [user, setUser] = useState(null);
+    
     // ==============================
     // FETCH PRODUCTS
     // ==============================
@@ -33,6 +34,21 @@ const ShopContextProvider = ({ children }) => {
         }
     }
 
+
+
+    const fetchProfile = async () => {
+        const token = localStorage.getItem("token");
+
+        if (!token) return;
+
+        const res = await axios.get(`${BASE_URL}/api/profile/`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        setUser(res.data);
+    }
     // ==============================
     // FETCH CART
     // ==============================
@@ -156,6 +172,8 @@ const ShopContextProvider = ({ children }) => {
         return total
     }
 
+
+
     // ==============================
     // TOTAL ITEMS
     // ==============================
@@ -177,7 +195,8 @@ const ShopContextProvider = ({ children }) => {
 
         fetchProducts()
         fetchCart()
-
+        fetchProfile()
+        
     }, [])
 
 
@@ -224,6 +243,9 @@ const ShopContextProvider = ({ children }) => {
 
         all_product,
         cartData: pendingCart,
+
+        user,
+        fetchProfile,
 
         increaseQty,
         decreaseQty,
