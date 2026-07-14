@@ -32,6 +32,6 @@ urlpatterns = [
     ),
 
     path('my_orders/', user_orders, name='my_orders'),
-    path("profile/", UserProfileView.as_view(), name="profile"),
+    path("profile/", UserProfileView.as_view(), name="profil"),
 
 ]

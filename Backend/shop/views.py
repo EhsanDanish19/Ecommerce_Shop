@@ -1,5 +1,10 @@
+from urllib import request
+
+from rest_framework.views import APIView
 
 from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import make_password
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -53,9 +58,9 @@ def login_view(request):
     
     return Response({"error": "Invalid Username or Password"}, status=400)
 
-from rest_framework.views import APIView
-
+@permission_classes([IsAuthenticated])
 class UserProfileView(APIView):
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -84,7 +89,7 @@ class UserProfileView(APIView):
             request.user.last_name = names[1] if len(names) > 1 else ""
             request.user.save()
 
-            
+
         serializer = UserProfileSerializer(
             profile,
             data=request.data,
@@ -98,10 +103,8 @@ class UserProfileView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-from django.contrib.auth import authenticate
-from django.contrib.auth.hashers import make_password
 
-
+@permission_classes([IsAuthenticated])
 class ChangePasswordView(APIView):
 
     permission_classes = [IsAuthenticated]
