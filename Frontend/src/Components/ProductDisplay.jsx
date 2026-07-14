@@ -14,8 +14,20 @@ const ProductDisplay = (props) => {
   const { product } = props;
   const [selectedSize, setSelectedSize] = useState(null)
   const [selectedVariant, setSelectedVariant] = useState(null);
+  const [mainImage, setMainImage] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!product) return;
+
+    if (product.images && product.images.length > 0) {
+      setMainImage(`${BASE_URL}${product.images[0].image}`);
+    } else if (product.image) {
+      setMainImage(`${BASE_URL}${product.image}`);
+    }
+  }, [product]);
+
 
   const handleAddToCart = async () => {
 
@@ -69,15 +81,38 @@ const ProductDisplay = (props) => {
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 p-10 md:mx-5 lg:mx-30 mb-5'>
+
       {/* Left Side */}
+
       <div className='flex '>
-        <div className=''>
-          <img className=' h-30' src={`${BASE_URL}${product.image}`} alt="" />
-          <img className='my-5 h-30' src={`${BASE_URL}${product.image}`} alt="" />
-          <img className=' h-30' src={`${BASE_URL}${product.image}`} alt="" />
+        <div className="flex flex-col gap-3">
+
+          {/* Main Product Image */}
+
+          {mainImage !== `${BASE_URL}${product.image}` && (
+            <img
+              src={`${BASE_URL}${product.image}`}
+              alt=""
+              onClick={() => setMainImage(`${BASE_URL}${product.image}`)}
+              className="h-30  cursor-pointer border rounded hover:border-orange-500"
+            />
+          )}
+          {/* Gallery Images */}
+          {product.images?.filter((img) => `${BASE_URL}${img.image}` !== mainImage).map((img) => (
+            <img
+              key={img.id}
+              src={`${BASE_URL}${img.image}`}
+              alt=""
+              onClick={() => setMainImage(`${BASE_URL}${img.image}`)}
+              className="h-30 cursor-pointer border rounded hover:border-orange-500"
+            />
+          ))}
+
         </div>
         <div>
-          <img className=' ml-5 h-100' src={`${BASE_URL}${product.image}`} alt='' />
+          <img className=' ml-5 h-100 object-contain' src={mainImage}
+            alt=""
+          />
         </div>
       </div>
       {/* Right Side */}
