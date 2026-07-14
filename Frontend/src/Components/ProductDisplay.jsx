@@ -13,6 +13,7 @@ const ProductDisplay = (props) => {
   const { addToCart } = useContext(ShopContext);
   const { product } = props;
   const [selectedSize, setSelectedSize] = useState(null)
+  const [selectedVariant, setSelectedVariant] = useState(null);
 
   const navigate = useNavigate();
 
@@ -64,7 +65,7 @@ const ProductDisplay = (props) => {
     }
 
   }
-  
+
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 p-10 md:mx-5 lg:mx-30 mb-5'>
@@ -91,11 +92,9 @@ const ProductDisplay = (props) => {
           <p className='font-bold'>(130)</p>
         </div>
         <div className='flex gap-5 font-bold'>
-          <p className='text-gray-500 line-through'>
-            Rs : {product.old_price}
-          </p>
+
           <p className='text-red-500'>
-            Rs : {product.new_price}
+            Rs : {selectedVariant?.new_price}
           </p>
         </div>
         <div>
@@ -104,15 +103,24 @@ const ProductDisplay = (props) => {
         <div>
           <h1 className='text-xl font-bold text-gray-700 py-1 mb-2'>Select Size</h1>
           <div className='flex gap-3'>
-            {product.sizes?.map((size, index) => (
+            {product.size_stock?.map((item, index) => (
+
               <div
                 key={index}
-                onClick={() => setSelectedSize(String(size).trim())}
+                onClick={() => {
+                  setSelectedSize(item.size)
+                  setSelectedVariant(item)
+                }}
+
                 className={`border cursor-pointer w-10 h-10 flex items-center justify-center
-    ${selectedSize === String(size).trim() ? 'bg-orange-600 text-white' : ''}`}
+${selectedSize === item.size ?
+                    'bg-orange-600 text-white' : ''}`}
               >
-                {size}
+
+                {item.size}
+
               </div>
+
             ))}
           </div>
           <button onClick={handleAddToCart} className='bg-orange-600 w-full lg:w-[400px] p-2 text-white font-semibold text-xl hover:bg-orange-500 cursor-pointer my-2 outline-none'>

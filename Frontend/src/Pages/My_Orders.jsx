@@ -79,72 +79,86 @@ const My_Orders = () => {
                     </div>
 
                     {
-                        orders.map((order) => (
+    orders.map((order) => (
 
-                            order.items.map((item, index) => (
+        <React.Fragment key={order.id}>
 
-                                <div
-                                    key={`${order.id}-${index}`}
-                                    className="grid grid-cols-1 md:grid-cols-9 justify-between md:mx-5 lg:mx-20 py-4 text-center border border-t-0 border-gray-300"
-                                >
+            {
+                order.items.map((item, index) => (
 
-                                    <div>
-                                        <span className="md:hidden font-bold">Id: </span>
-                                        {order.id}
-                                    </div>
-                                    <div>
-                                        <span className="md:hidden font-bold">Product: </span>
-                                        {item.name}
-                                    </div>
+                    <div
+                        key={`${order.id}-${index}`}
+                        className="grid grid-cols-1 md:grid-cols-9 justify-between md:mx-5 lg:mx-20 py-4 text-center border border-t-0 border-gray-300"
+                    >
 
-                                    <div>
-                                        <span className="md:hidden font-bold">Size: </span>
-                                        {item.size}
-                                    </div>
+                        <div>
+                            <span className="md:hidden font-bold">Id: </span>
+                            {order.id}
+                        </div>
 
-                                    <div>
-                                        <span className="md:hidden font-bold">Qty: </span>
-                                        {item.quantity}
-                                    </div>
+                        <div>
+                            <span className="md:hidden font-bold">Product: </span>
+                            {item.name}
+                        </div>
 
+                        <div>
+                            <span className="md:hidden font-bold">Size: </span>
+                            {item.size}
+                        </div>
 
-                                    <div>
-                                        <span className="md:hidden font-bold">Price: </span>
-                                        Rs {item.price}
-                                    </div>
+                        <div>
+                            <span className="md:hidden font-bold">Qty: </span>
+                            {item.quantity}
+                        </div>
 
-                                    <div>
-                                        <span className="md:hidden font-bold">Total: </span>
-                                        Rs {order.total_amount}
-                                    </div>
+                        <div>
+                            <span className="md:hidden font-bold">Price: </span>
+                            Rs {item.price}
+                        </div>
 
-                                    <div>
-                                        <span className="md:hidden font-bold">Date: </span>
-                                        {new Date(order.created_at).toLocaleString([], {
-                                            year: "numeric",
-                                            month: "short",
-                                            day: "numeric",
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                        })}
-                                    </div>
+                        <div>
+                            <span className="md:hidden font-bold">Subtotal: </span>
+                            Rs {item.subtotal}
+                        </div>
 
-
-
-                                    <div className="flex justify-center">
-                                        <OrderTracking status={order.status} />
-                                    </div>
+                        <div>
+                            <span className="md:hidden font-bold">Date: </span>
+                            {new Date(order.created_at).toLocaleString([], {
+                                year:"numeric",
+                                month:"short",
+                                day:"numeric",
+                                hour:"2-digit",
+                                minute:"2-digit",
+                            })}
+                        </div>
 
 
+                        <div className="flex justify-center">
+                            <OrderTracking status={order.status}/>
+                        </div>
+
+                    </div>
+
+                ))
+            }
 
 
+            {/* Grand Total Row */}
 
-                                </div>
+            <div className="flex justify-end md:mx-5 lg:mx-20 py-4 font-bold text-xl border-b border-gray-300">
 
-                            ))
+                Grand Total:
+                <span className="ml-3 text-red-500">
+                    Rs {order.total_amount}
+                </span>
 
-                        ))
-                    }
+            </div>
+
+
+        </React.Fragment>
+
+    ))
+}
                 </div>
             )}
         </div>
