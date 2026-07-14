@@ -1,4 +1,3 @@
-from dataclasses import fields
 
 from django.contrib.auth.models import User
 from rest_framework import serializers
@@ -21,9 +20,27 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
         return user
     
+class ProductSizeStockSerializer(serializers.ModelSerializer):
+
+    size = serializers.StringRelatedField()
+
+    class Meta:
+        model = ProductSizeStock
+        fields = [
+            "size",
+            "stock",
+            "new_price",
+            "old_price"
+        ]
+    
 class ProductSerializer(serializers.ModelSerializer):
     tags = serializers.StringRelatedField(many=True)
     sizes = serializers.StringRelatedField(many=True)
+
+    size_stock = ProductSizeStockSerializer(
+        many=True,
+        read_only=True
+    )
 
     class Meta:
         model = Product
@@ -84,3 +101,4 @@ class CheckoutSerializer(serializers.Serializer):
     phone = serializers.CharField()
     address = serializers.CharField()
     payment_method = serializers.CharField()
+

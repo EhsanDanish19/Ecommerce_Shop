@@ -224,11 +224,11 @@ def get_cart(request):
             "product_id": item.product.id,
             "name": item.product.name,
             "image": item.product.image.url,
-            "price": item.product.new_price,
+            "price": stock.new_price,
             "size": item.size.name,
             "quantity": item.quantity,
             "available_stock": stock.stock if stock else 0,
-            "subtotal": item.product.new_price * item.quantity
+            "subtotal": stock.new_price * item.quantity
         })
 
     return Response(data)
@@ -456,7 +456,11 @@ class CheckoutAPIView(APIView):
         # TOTAL PRICE
         # ==========================
         total_amount = sum(
-            item.product.new_price * item.quantity
+            ProductSizeStock.objects.get(
+                product=item.product,
+                size=item.size
+            ).new_price * item.quantity
+
             for item in cart_items
         )
 
@@ -478,13 +482,19 @@ class CheckoutAPIView(APIView):
         # ==========================
         for item in cart_items:
 
+            stock = ProductSizeStock.objects.get(
+                product=item.product,
+                size=item.size
+            )
+
+
             OrderItem.objects.create(
                 order=order,
                 product=item.product,
                 size=item.size,
                 quantity=item.quantity,
-                price=item.product.new_price,
-                subtotal=item.product.new_price * item.quantity
+                price=stock.new_price,
+                subtotal=stock.new_price * item.quantity
             )
 
            # Reduce Stock
