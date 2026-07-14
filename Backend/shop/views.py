@@ -8,6 +8,8 @@ from rest_framework.decorators import permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Product
 from .serializers import *
+from rest_framework import status
+
 
 # ==============================
 # Register
@@ -50,6 +52,102 @@ def login_view(request):
         return Response(data)
     
     return Response({"error": "Invalid Username or Password"}, status=400)
+
+from rest_framework.views import APIView
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        profile, created = UserProfile.objects.get_or_create(
+            user=request.user
+        )
+
+        serializer = UserProfileSerializer(profile)
+        return Response(serializer.data)
+
+
+    #=======================
+    #Updates Profile
+    #=======================
+
+    def put(self, request):
+        profile, created = UserProfile.objects.get_or_create(
+            user=request.user
+        )
+
+        full_name = request.data.get("full_name")
+        if full_name:
+            names = full_name.strip().split(" ", 1)
+
+            request.user.first_name = names[0]
+            request.user.last_name = names[1] if len(names) > 1 else ""
+            request.user.save()
+
+            
+        serializer = UserProfileSerializer(
+            profile,
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import make_password
+
+
+class ChangePasswordView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+
+    def post(self,request):
+
+        old_password = request.data.get(
+            "old_password"
+        )
+
+        new_password = request.data.get(
+            "new_password"
+        )
+
+
+        user = authenticate(
+            username=request.user.username,
+            password=old_password
+        )
+
+
+        if user is None:
+
+            return Response(
+                {
+                    "error":
+                    "Old password incorrect"
+                },
+                status=400
+            )
+
+
+        request.user.password = make_password(
+            new_password
+        )
+
+        request.user.save()
+
+
+        return Response(
+            {
+                "message":
+                "Password changed"
+            }
+        )
 
 # ==============================
 # All Products

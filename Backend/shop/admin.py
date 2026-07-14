@@ -5,6 +5,7 @@ from .models import *
 admin.site.register(Tag)
 admin.site.register(Size)
 admin.site.register(ProductSizeStock)
+admin.site.register(UserProfile)
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage

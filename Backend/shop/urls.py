@@ -6,6 +6,10 @@ urlpatterns = [
     path('register/', register_user),
     path('login/', login_view),
     # path('login/', TokenObtainPairView.as_view()),
+
+    path("change-password/", ChangePasswordView.as_view(), name="changePassword"),
+
+
     path('products/', all_products),
     path('popular/', popular_products),
     path('product/<int:id>/', product_details),
@@ -28,5 +32,6 @@ urlpatterns = [
     ),
 
     path('my_orders/', user_orders, name='my_orders'),
+    path("profile/", UserProfileView.as_view(), name="profile"),
 
 ]

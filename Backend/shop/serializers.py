@@ -19,7 +19,31 @@ class RegisterSerializer(serializers.ModelSerializer):
             password= validated_data['password']
         )
         return user
-    
+
+from rest_framework import serializers
+from .models import UserProfile
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.username", read_only=True)
+    full_name = serializers.CharField(source="user.get_full_name", read_only=True)
+    email = serializers.EmailField(source="user.email", read_only=True)
+    date_joined = serializers.DateTimeField(source="user.date_joined", read_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = [
+            "id",
+            "username",
+            "full_name",
+            "email",
+            "full_name",
+            "phone",
+            "address",
+            "bio",
+            "image",
+            "date_joined",
+        ]
+
 class ProductSizeStockSerializer(serializers.ModelSerializer):
 
     size = serializers.StringRelatedField()
