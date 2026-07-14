@@ -4,9 +4,17 @@ from .models import *
 
 admin.site.register(Tag)
 admin.site.register(Size)
-admin.site.register(Product)
 admin.site.register(ProductSizeStock)
 
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 1
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+
+    inlines = [ProductImageInline]
 
 # ==============================
 # ORDER ITEMS INLINE

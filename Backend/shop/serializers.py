@@ -32,7 +32,13 @@ class ProductSizeStockSerializer(serializers.ModelSerializer):
             "new_price",
             "old_price"
         ]
-    
+
+class ProductImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductImage
+        fields = ["id", "image"]
+
 class ProductSerializer(serializers.ModelSerializer):
     tags = serializers.StringRelatedField(many=True)
     sizes = serializers.StringRelatedField(many=True)
@@ -42,6 +48,11 @@ class ProductSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    images = ProductImageSerializer(
+        many = True,
+        read_only = True
+    )
+    
     class Meta:
         model = Product
         fields = "__all__"
