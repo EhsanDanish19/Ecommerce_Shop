@@ -3,7 +3,7 @@ import logo from "../../assets/logo.png"
 import cartIcon from "../../assets/cart-icon.png"
 import './Navbar.css'
 import "bootstrap-icons/font/bootstrap-icons.css"
-import { Link, useNavigate,useLocation } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { ShopContext } from '../../Context/ShopContext'
 
 const Navbar = () => {
@@ -77,7 +77,7 @@ const Navbar = () => {
                             Kids
                         </li>
                     </Link>
-                    
+
                 </ul>
 
                 {/* Right */}
@@ -87,9 +87,9 @@ const Navbar = () => {
                         token ? (
                             <h1 className="font-semibold text-center">
                                 Welcome, {username} 👋
-                                
+
                             </h1>
-                            
+
                         ) : (
                             <h1 className="font-semibold text-center">
                                 Welcome, Guest 😊
@@ -100,7 +100,7 @@ const Navbar = () => {
                     <div className='hidden lg:flex'>
                         {
                             token ?
-                                (                               
+                                (
                                     <div className="relative">
 
                                         {/* Profile Icon */}
@@ -116,14 +116,14 @@ const Navbar = () => {
                                                 <div className="absolute right-0 mt-3 w-40 bg-white shadow-lg rounded-lg p-3 z-50">
 
                                                     <Link to="/profile" onClick={() => setProfileOpen(false)}
->
+                                                    >
                                                         <button className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded">
                                                             Profile
                                                         </button>
                                                     </Link>
 
                                                     <Link to="/my_orders" onClick={() => setProfileOpen(false)}
->
+                                                    >
                                                         <button className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded">
                                                             Orders
                                                         </button>
@@ -149,7 +149,7 @@ const Navbar = () => {
                                             Login
                                         </button>
                                     </Link>
-                                    
+
 
                                 )
                         }
@@ -200,7 +200,7 @@ const Navbar = () => {
                             Kids
                         </li>
                     </Link>
-                    
+
                     {
                         token ? (
                             <div className="relative">
@@ -219,19 +219,17 @@ const Navbar = () => {
                                     profileOpen && (
                                         <div className="absolute right-0 mt-3 w-40 bg-white shadow-lg rounded-lg p-3 z-50">
 
-                                            <Link to="/profile">
+                                            <Link to="/profile" onClick={() => setProfileOpen()}>
                                                 <button className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded">
                                                     Profile
                                                 </button>
                                             </Link>
 
-                                            <Link to="/my_orders">
-                        <li
-                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "my_orders" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("my_orders")}
-                        >
-                            Orders
-                        </li>
-                    </Link>
+                                            <Link to="/my_orders" onClick={() => setProfileOpen()}>
+                                                <button className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded">
+                                                    Orders
+                                                </button>
+                                            </Link>
 
                                             <button
                                                 onClick={handleLogout}
