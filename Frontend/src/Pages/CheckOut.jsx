@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { ShopContext } from "../Context/ShopContext";
 
 const Checkout = () => {
 
     const navigate = useNavigate();
 
-    const { getTotalAmount, cartData } = useContext(ShopContext);
+    const { getTotalAmount, cartData, fetchCart } = useContext(ShopContext);
 
     const [formData, setFormData] = useState({
         full_name: "",
@@ -18,9 +18,9 @@ const Checkout = () => {
 
     const token = localStorage.getItem("token");
 
-    // redirect if not logged in
     if (!token) {
-        navigate("/login");
+        localStorage.setItem("redirectAfterLogin", window.location.pathname);
+        return <Navigate to="/login" replace />;
     }
 
     const handleChange = (e) => {
@@ -46,8 +46,8 @@ const Checkout = () => {
 
             alert("Order Placed Successfully!");
 
-            // redirect to home or success page
-            navigate("/");
+            await fetchCart();
+            navigate("/my_orders");
 
         } catch (error) {
             console.log(error);

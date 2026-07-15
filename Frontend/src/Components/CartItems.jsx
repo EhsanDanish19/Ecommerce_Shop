@@ -6,7 +6,7 @@ import { BASE_URL } from '../api'
 
 import delete_icon from '../assets/delete.png'
 
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate,Navigate } from 'react-router-dom'
 
 const CartItems = () => {
 
@@ -28,9 +28,10 @@ const CartItems = () => {
 
     const token = localStorage.getItem("token")
 
-    if (!token) {
-        navigate("/login")
-    }
+   if (!token) {
+    localStorage.setItem("redirectAfterLogin", window.location.pathname);
+    return <Navigate to="/login" replace />;
+}
 
     return (
 

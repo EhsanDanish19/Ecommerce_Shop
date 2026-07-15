@@ -19,6 +19,7 @@ const Navbar = () => {
         localStorage.getItem('username')
     )
 
+
     useEffect(() => {
         setUsername(localStorage.getItem('username'))
     }, [token])
@@ -86,7 +87,9 @@ const Navbar = () => {
                         token ? (
                             <h1 className="font-semibold text-center">
                                 Welcome, {username} 👋
+                                
                             </h1>
+                            
                         ) : (
                             <h1 className="font-semibold text-center">
                                 Welcome, Guest 😊
@@ -97,11 +100,7 @@ const Navbar = () => {
                     <div className='hidden lg:flex'>
                         {
                             token ?
-                                (
-                                    token && location.pathname !== "/profile" && location.pathname !== "/my_orders" ? (
-
-                                    
-
+                                (                               
                                     <div className="relative">
 
                                         {/* Profile Icon */}
@@ -116,13 +115,15 @@ const Navbar = () => {
                                             profileOpen && (
                                                 <div className="absolute right-0 mt-3 w-40 bg-white shadow-lg rounded-lg p-3 z-50">
 
-                                                    <Link to="/profile">
+                                                    <Link to="/profile" onClick={() => setProfileOpen(false)}
+>
                                                         <button className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded">
                                                             Profile
                                                         </button>
                                                     </Link>
 
-                                                    <Link to="/my_orders">
+                                                    <Link to="/my_orders" onClick={() => setProfileOpen(false)}
+>
                                                         <button className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded">
                                                             Orders
                                                         </button>
@@ -140,16 +141,17 @@ const Navbar = () => {
 
                                     </div>
 
-                                ) : (
+                                )
+                                : (
 
                                     <Link to="/login">
                                         <button className="nav-login w-[100px] h-[35px] border border-gray-500 px-4 py-1 rounded-full text-sm">
                                             Login
                                         </button>
                                     </Link>
+                                    
 
                                 )
-                                ):null
                         }
                     </div>
                     <div className="relative">
@@ -198,13 +200,7 @@ const Navbar = () => {
                             Kids
                         </li>
                     </Link>
-                    <Link to="/my_orders">
-                        <li
-                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "my_orders" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("my_orders")}
-                        >
-                            Orders
-                        </li>
-                    </Link>
+                    
                     {
                         token ? (
                             <div className="relative">
@@ -228,6 +224,14 @@ const Navbar = () => {
                                                     Profile
                                                 </button>
                                             </Link>
+
+                                            <Link to="/my_orders">
+                        <li
+                            className={`cursor-pointer px-3 py-1 rounded-lg ${menu === "my_orders" ? "bg-gray-100 text-black" : ""}`} onClick={() => setMenu("my_orders")}
+                        >
+                            Orders
+                        </li>
+                    </Link>
 
                                             <button
                                                 onClick={handleLogout}

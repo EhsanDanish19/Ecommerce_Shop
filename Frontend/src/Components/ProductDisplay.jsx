@@ -3,14 +3,14 @@ import star_icon from '../assets/star_icon.png'
 import star_half_icon from '../assets/star_half_icon.png'
 import { ShopContext } from '../Context/ShopContext';
 import { BASE_URL } from '../api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import axios from 'axios';
 
 import defaultProduct from '../assets/defaultProduct.avif'
 
 const ProductDisplay = (props) => {
 
-  const { addToCart } = useContext(ShopContext);
+  const { addToCart, fetchCart } = useContext(ShopContext);
   const { product } = props;
   const [selectedSize, setSelectedSize] = useState(null)
   const [selectedVariant, setSelectedVariant] = useState(null);
@@ -35,8 +35,7 @@ const ProductDisplay = (props) => {
 
     if (!token) {
       localStorage.setItem("redirectAfterLogin", window.location.pathname);
-      navigate("/login");
-      return;
+      return <Navigate to="/login" replace />;
     }
 
     if (!selectedSize) {
@@ -61,7 +60,11 @@ const ProductDisplay = (props) => {
       );
 
       alert("Product added to cart")
-      window.location.reload();
+      await fetchCart();
+      navigate("/cart");
+
+
+
     } catch (error) {
       console.log("ERROR:", error.response?.data);
 

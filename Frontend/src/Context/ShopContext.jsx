@@ -71,6 +71,7 @@ const ShopContextProvider = ({ children }) => {
 
             setCartData([...res.data])
             setPendingCart([...res.data])
+            
 
         } catch (error) {
             console.log(error)
@@ -251,6 +252,8 @@ const ShopContextProvider = ({ children }) => {
         decreaseQty,
 
         updateCart,
+
+        fetchCart,
 
         removeItem,
 
