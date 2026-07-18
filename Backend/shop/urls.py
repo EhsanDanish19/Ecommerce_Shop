@@ -34,4 +34,10 @@ urlpatterns = [
     path('my_orders/', user_orders, name='my_orders'),
     path("profile/", UserProfileView.as_view(), name="profil"),
 
+    path("wishlist/", WishlistAPIView.as_view() ),
+
+    path("wishlist/add/", AddWishlistAPIView.as_view()),
+
+    path("wishlist/remove/<int:id>/", RemoveWishlistAPIView.as_view()),
+
 ]

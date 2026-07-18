@@ -636,3 +636,89 @@ def user_orders(request):
     )
 
     return Response(serializer.data)
+
+
+class WishlistAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        wishlist, created = Wishlist.objects.get_or_create(
+            user=request.user
+        )
+
+        serializer = WishlistSerializer(
+            wishlist,
+            context={"request": request}
+        )
+
+        return Response(serializer.data)
+    
+class AddWishlistAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        product_id = request.data.get("product")
+
+        if not product_id:
+
+            return Response(
+                {"error": "Product required"},
+                status=400
+            )
+
+        product = Product.objects.get(id=product_id)
+
+        wishlist, created = Wishlist.objects.get_or_create(
+            user=request.user
+        )
+
+        if WishlistItem.objects.filter(
+            wishlist=wishlist,
+            product=product
+        ).exists():
+
+            return Response({
+
+                "message": "Already added"
+
+            })
+
+        WishlistItem.objects.create(
+
+            wishlist=wishlist,
+
+            product=product
+
+        )
+
+        return Response({
+
+            "message": "Added successfully"
+
+        })
+    
+
+
+class RemoveWishlistAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, id):
+
+        WishlistItem.objects.filter(
+
+            id=id,
+
+            wishlist__user=request.user
+
+        ).delete()
+
+        return Response({
+
+            "message": "Removed"
+
+        })

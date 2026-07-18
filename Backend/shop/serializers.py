@@ -137,3 +137,72 @@ class CheckoutSerializer(serializers.Serializer):
     address = serializers.CharField()
     payment_method = serializers.CharField()
 
+
+class WishlistItemSerializer(serializers.ModelSerializer):
+
+    image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = WishlistItem
+        fields = [
+            "id",
+            "product",
+            "image",
+            "created_at"
+        ]
+
+    def get_image(self, obj):
+
+        request = self.context.get("request")
+
+        if obj.product.image:
+
+            return request.build_absolute_uri(
+                obj.product.image.url
+            )
+
+        return None
+    
+class WishlistSerializer(serializers.ModelSerializer):
+
+    items = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Wishlist
+
+        fields = [
+            "id",
+            "items"
+        ]
+
+    def get_items(self, obj):
+
+        request = self.context.get("request")
+
+        data = []
+
+        for item in obj.items.all():
+
+            stock = item.product.size_stock.first()
+
+            data.append({
+
+                "id": item.id,
+
+                "product_id": item.product.id,
+
+                "name": item.product.name,
+
+                "image": request.build_absolute_uri(
+                    item.product.image.url
+                ) if item.product.image else None,
+
+                "price": stock.new_price if stock else 0,
+
+                "category": item.product.category,
+
+                "created_at": item.created_at
+
+            })
+
+        return data

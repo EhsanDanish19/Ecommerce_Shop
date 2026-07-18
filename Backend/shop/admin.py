@@ -117,3 +117,4 @@ class CartAdmin(admin.ModelAdmin):
         "size",
 
     )
+

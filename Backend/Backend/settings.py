@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-lyi1*(7fvkl^0ns57be_)kp+6_x8e6wzmrxamy=&xb=!gi!2df
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -43,6 +43,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 CORS_ALLOW_ALL_ORIGINS = True
+#for mobile
+#twpn dgtl zekh jefw
+#npm run dev -- --host 0.0.0.0 for vite python manage.py runserver 0.0.0.0:8000
+# CORS_ALLOW_CREDENTIALS = True
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://192.168.100.64:5173",
+# ]
 ROOT_URLCONF = 'Backend.urls'
 
 TEMPLATES = [
