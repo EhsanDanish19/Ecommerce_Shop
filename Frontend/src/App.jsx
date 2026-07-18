@@ -16,6 +16,7 @@ import AutoLogout from "./Components/AutoLogout"
 import Checkout from "./Pages/CheckOut"
 import My_Orders from "./Pages/My_Orders"
 import User_Profile from "./Pages/User_Profile"
+import Wishlist from "./Pages/Wishlist"
 
 
 function App() {
@@ -41,6 +42,8 @@ function App() {
     <Route path="/register" element={<Register/>} />
     <Route path="/my_orders" element={<My_Orders/>} />
     <Route path="/profile" element={<User_Profile/>} />
+    <Route path="/wishlist" element={<Wishlist />}
+/>
 
     </Routes>
     

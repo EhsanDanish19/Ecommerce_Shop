@@ -10,12 +10,14 @@ import { BASE_URL } from "../api"
 export const ShopContext = createContext(null)
 
 const ShopContextProvider = ({ children }) => {
-    
+
     const [all_product, setAll_product] = useState([])
     const [cartData, setCartData] = useState([])
     const [pendingCart, setPendingCart] = useState([])
     const [user, setUser] = useState(null);
-    
+    const [wishlist, setWishlist] = useState([]);
+
+
     // ==============================
     // FETCH PRODUCTS
     // ==============================
@@ -71,7 +73,7 @@ const ShopContextProvider = ({ children }) => {
 
             setCartData([...res.data])
             setPendingCart([...res.data])
-            
+
 
         } catch (error) {
             console.log(error)
@@ -194,10 +196,11 @@ const ShopContextProvider = ({ children }) => {
     // ==============================
     useEffect(() => {
 
-        fetchProducts()
-        fetchCart()
-        fetchProfile()
-        
+        fetchProducts();
+        fetchCart();
+        fetchProfile();
+        fetchWishlist();
+
     }, [])
 
 
@@ -237,6 +240,107 @@ const ShopContextProvider = ({ children }) => {
         }
 
     }
+
+
+
+    // ==============================
+    // Wishlist fetch
+    // ==============================
+    const fetchWishlist = async () => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            setWishlist([]);
+            return;
+        }
+
+        try {
+            const response = await axios.get(
+                `${BASE_URL}/api/wishlist/`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            setWishlist(response.data.items || []);
+
+        } catch (error) {
+            console.log("Wishlist Error:", error);
+        }
+    };
+
+
+    const addToWishlist = async (productId) => {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            alert("Please login first");
+            return;
+        }
+
+        try {
+
+            await axios.post(
+                `${BASE_URL}/api/wishlist/add/`,
+                {
+                    product: productId
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            await fetchWishlist();
+
+        } catch (error) {
+
+            console.log("Add Wishlist Error:", error);
+
+        }
+    };
+
+
+    const removeFromWishlist = async (wishlistItemId) => {
+
+        const token = localStorage.getItem("token");
+
+        try {
+
+            await axios.delete(
+                `${BASE_URL}/api/wishlist/remove/${wishlistItemId}/`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            setWishlist((previousWishlist) =>
+                previousWishlist.filter(
+                    (item) => item.id !== wishlistItemId
+                )
+            );
+
+        } catch (error) {
+
+            console.log("Remove Wishlist Error:", error);
+
+        }
+    };
+
+    const isInWishlist = (productId) => {
+
+        return wishlist.some(
+            (item) => item.product_id === productId
+        );
+
+    };
+
     // ==============================
     // CONTEXT VALUE
     // ==============================
@@ -258,7 +362,15 @@ const ShopContextProvider = ({ children }) => {
         removeItem,
 
         getTotalAmount,
-        getTotalItems
+        getTotalItems,
+
+        wishlist,
+        fetchWishlist,
+        addToWishlist,
+        removeFromWishlist,
+        isInWishlist,
+
+
     }
 
     return (

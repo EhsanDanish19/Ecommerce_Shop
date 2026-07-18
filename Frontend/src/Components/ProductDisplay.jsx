@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { Heart } from 'lucide-react';
 import star_icon from '../assets/star_icon.png'
 import star_half_icon from '../assets/star_half_icon.png'
 import { ShopContext } from '../Context/ShopContext';
@@ -10,7 +11,16 @@ import defaultProduct from '../assets/defaultProduct.avif'
 
 const ProductDisplay = (props) => {
 
-  const { addToCart, fetchCart } = useContext(ShopContext);
+  const {
+    addToCart,
+    fetchCart,
+    wishlist,
+    addToWishlist,
+    removeFromWishlist,
+    isInWishlist
+
+  } = useContext(ShopContext);
+
   const { product } = props;
   const [selectedSize, setSelectedSize] = useState(null)
   const [selectedVariant, setSelectedVariant] = useState(null);
@@ -29,13 +39,55 @@ const ProductDisplay = (props) => {
   }, [product]);
 
 
+
+  const handleWishlist = async () => {
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      localStorage.setItem(
+        "redirectAfterLogin",
+        window.location.pathname
+      );
+
+      navigate("/login");
+      return;
+    }
+
+    const liked = isInWishlist(product.id);
+
+    if (liked) {
+
+      const wishlistItem = wishlist.find(
+        (item) => item.product_id === product.id
+      );
+
+      if (wishlistItem) {
+
+        await removeFromWishlist(
+          wishlistItem.id
+        );
+
+      }
+
+    } else {
+
+      await addToWishlist(
+        product.id
+      );
+
+    }
+
+  };
+
   const handleAddToCart = async () => {
 
     const token = localStorage.getItem("token");
 
     if (!token) {
       localStorage.setItem("redirectAfterLogin", window.location.pathname);
-      return <Navigate to="/login" replace />;
+      navigate("/login");
+      return;
     }
 
     if (!selectedSize) {
@@ -120,8 +172,44 @@ const ProductDisplay = (props) => {
       </div>
       {/* Right Side */}
       <div className='md:col-span-2 mt-5 md:mt-[-10px] lg:mt-[-35px] px-5 md:ml-10 items-center'>
-        <h1 className='lg:mt-7 text-4xl font-bold'>{product.name}</h1>
-        <div className='flex gap-1 py-2'>
+        <div className="flex items-center justify-between gap-5">
+
+          <h1 className='lg:mt-7 text-4xl font-bold'>
+            {product.name}
+          </h1>
+
+          <button
+            onClick={handleWishlist}
+            className={`
+                        w-12
+                        h-12
+                        rounded-full
+                        flex
+                        items-center
+                        justify-center
+                        border
+                        transition
+                        duration-300
+                        hover:scale-110
+      ${isInWishlist(product.id)
+                ? "text-red-500 border-red-500 bg-red-50"
+                : "text-gray-500 border-gray-300"
+              }
+    `}
+          >
+
+            <Heart
+              size={25}
+              fill={
+                isInWishlist(product.id)
+                  ? "currentColor"
+                  : "none"
+              }
+            />
+
+          </button>
+
+        </div>        <div className='flex gap-1 py-2'>
           <img className='h-7 p-1' src={star_icon} alt='' />
           <img className='h-7 p-1' src={star_icon} alt='' />
           <img className='h-7 p-1' src={star_icon} alt='' />

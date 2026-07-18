@@ -6,6 +6,8 @@ import "bootstrap-icons/font/bootstrap-icons.css"
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { ShopContext } from '../../Context/ShopContext'
 
+// import { Heart } from "lucide-react";
+
 const Navbar = () => {
 
     const navigate = useNavigate()
@@ -14,10 +16,11 @@ const Navbar = () => {
     const [profileOpen, setProfileOpen] = useState(false)
 
     const location = useLocation();
-
+    // const { wishlist } = useContext(ShopContext);
     const [username, setUsername] = useState(
         localStorage.getItem('username')
     )
+
 
 
     useEffect(() => {
@@ -77,6 +80,38 @@ const Navbar = () => {
                             Kids
                         </li>
                     </Link>
+                    {/* <Link
+                        to="/wishlist"
+                        className="relative"
+                    >
+
+                        <Heart size={24} />
+
+                        {wishlist.length > 0 && (
+
+                            <span className="
+            absolute
+            -top-2
+            -right-2
+            min-w-5
+            h-5
+            px-1
+            rounded-full
+            bg-red-500
+            text-white
+            text-xs
+            flex
+            items-center
+            justify-center
+        ">
+
+                                {wishlist.length}
+
+                            </span>
+
+                        )}
+
+                    </Link> */}
 
                 </ul>
 
