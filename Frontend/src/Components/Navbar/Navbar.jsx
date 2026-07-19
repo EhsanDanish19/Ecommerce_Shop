@@ -6,7 +6,7 @@ import "bootstrap-icons/font/bootstrap-icons.css"
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { ShopContext } from '../../Context/ShopContext'
 
-// import { Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 
 const Navbar = () => {
 
@@ -16,7 +16,7 @@ const Navbar = () => {
     const [profileOpen, setProfileOpen] = useState(false)
 
     const location = useLocation();
-    // const { wishlist } = useContext(ShopContext);
+    const { wishlist } = useContext(ShopContext);
     const [username, setUsername] = useState(
         localStorage.getItem('username')
     )
@@ -80,30 +80,28 @@ const Navbar = () => {
                             Kids
                         </li>
                     </Link>
-                    {/* <Link
-                        to="/wishlist"
-                        className="relative"
-                    >
+                    <Link
+                        to="/wishlist" className="relative content-center">
 
                         <Heart size={24} />
 
                         {wishlist.length > 0 && (
 
                             <span className="
-            absolute
-            -top-2
-            -right-2
-            min-w-5
-            h-5
-            px-1
-            rounded-full
-            bg-red-500
-            text-white
-            text-xs
-            flex
-            items-center
-            justify-center
-        ">
+                                    absolute
+                                    -top-2
+                                    -right-2
+                                    min-w-5
+                                    h-5
+                                    px-1
+                                    rounded-full
+                                    bg-red-500
+                                    text-white
+                                    text-xs
+                                    flex
+                                    items-center
+                                    justify-center
+                                ">
 
                                 {wishlist.length}
 
@@ -111,7 +109,7 @@ const Navbar = () => {
 
                         )}
 
-                    </Link> */}
+                    </Link>
 
                 </ul>
 
@@ -235,6 +233,37 @@ const Navbar = () => {
                             Kids
                         </li>
                     </Link>
+                     <Link
+                        to="/wishlist" className="relative">
+
+                        <Heart size={24} />
+
+                        {wishlist.length > 0 && (
+
+                            <span className="
+                                    absolute
+                                    -top-2
+                                    left-3
+                                    min-w-5
+                                    h-5
+                                    px-1
+                                    rounded-full
+                                    bg-red-500
+                                    text-white
+                                    text-xs
+                                    flex
+                                    items-center
+                                    justify-center
+                                ">
+
+                                {wishlist.length}
+
+                            </span>
+
+                        )}
+
+                    </Link>
+
 
                     {
                         token ? (
